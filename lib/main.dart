@@ -6,6 +6,7 @@ import 'screens/conversation/conversation.dart';
 import 'screens/diaries/parent_diary_upload.dart';
 import 'screens/home/home.dart';
 import 'screens/logIn/login.dart';
+import 'screens/providers/provider_home.dart';
 import 'screens/providers/provider_login.dart';
 import 'screens/report/report.dart';
 import 'screens/settings/setting.dart';
@@ -16,6 +17,10 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProviderLogIn()),
+        ChangeNotifierProvider(create: (_) => ProviderHome()),
+        // ChangeNotifierProvider(create: (_) => ProviderReport()),
+        // ChangeNotifierProvider(create: (_) => ProviderSettings()),
+
       ],
       child: MyApp(),
     ),
