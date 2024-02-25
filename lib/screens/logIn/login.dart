@@ -181,7 +181,7 @@ class _LogInState extends State<LogIn> {
       var response = await http.get(url);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
-        context.read<Provider_LogIn>().setData(jsonResponse);
+        context.read<ProviderLogIn>().setData(jsonResponse);
       } else {
         throw Exception('FetchHome 에러다 ㅅㅂ~~~');
       }
@@ -264,12 +264,6 @@ class _LogInState extends State<LogIn> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override
