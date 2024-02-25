@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class Provider_LogIn with ChangeNotifier {
+class ProviderLogIn with ChangeNotifier {
   StreamController<int> controller = StreamController.broadcast();
 
   late Map<String, dynamic> jsonResponse;
@@ -15,6 +15,7 @@ class Provider_LogIn with ChangeNotifier {
   late String childImageUrl;
 
   void setData(Map<String, dynamic> jsonResponse) {
+    bool isDone = false;
     print("데이터 받음!");
     completeList = jsonResponse['completeList'];
 
@@ -26,6 +27,10 @@ class Provider_LogIn with ChangeNotifier {
     childCorrectedText = childDiaryPreview['correctedText'];
     childImageUrl = childDiaryPreview['imageUrl'];
 
+    notifyListeners();
+    print("notifyListers() on");
+
+    //값 바뀐다는 걸 알려줌
     print(parentCorrectedText);
     print(parentImageUrl);
     print(childCorrectedText);
