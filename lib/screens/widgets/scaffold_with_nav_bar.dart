@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
@@ -14,7 +15,9 @@ class ScaffoldWithNavBar extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+
     return Scaffold(
+
       body: navigationShell,
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF8DBFD2),
@@ -26,25 +29,26 @@ class ScaffoldWithNavBar extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.home),
               onPressed: () {
-                navigationShell.goBranch(0); // Go to the first indexedStack item
+                navigationShell.goBranch(0);
               },
             ),
             IconButton(
               icon: Icon(Icons.menu_book),
               onPressed: () {
-                navigationShell.goBranch(1); // Go to the first indexedStack item
+                navigationShell.goBranch(1);
+                // context.watch<ProviderNavBar>();
               },
             ),
             IconButton(
               icon: Icon(Icons.bar_chart),
               onPressed: () {
-                navigationShell.goBranch(2); // Go to the first indexedStack item
+                navigationShell.goBranch(2);
               },
             ),
             IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                navigationShell.goBranch(3); // Go to the first indexedStack item
+                navigationShell.goBranch(3);
               },
             ),
           ],

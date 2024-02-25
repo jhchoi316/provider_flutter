@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 
 class ProviderLogIn with ChangeNotifier {
   StreamController<int> controller = StreamController.broadcast();
@@ -14,9 +16,24 @@ class ProviderLogIn with ChangeNotifier {
   late String childCorrectedText;
   late String childImageUrl;
 
-  void setData(Map<String, dynamic> jsonResponse) {
+  // /home
+  Future<Map<String, dynamic>> fetchHome() async {
+    // var url = Uri.http('52.79.242.219:8000', '/home', {'pid': '0', 'date': '${DateFormat('yyyy-MM-dd').format(_selectedDate)}'});
+    var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': '2024-02-18'});
+    print("fetchHome get요청들어갑니다~");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      return convert.jsonDecode(response.body) as Map<String, dynamic>;
+    }
+    else {
+      throw Exception('FetchHome 에러다 ㅅㅂ~~~');
+    }
+  }
+
+  void setData() async {
+    jsonResponse = await fetchHome();
     bool isDone = false;
-    print("데이터 받음!");
+    print("Home을 위한 데이터 받음!");
     completeList = jsonResponse['completeList'];
 
     parentDiaryPreview = jsonResponse['get_parent_diary_preview'];
@@ -28,13 +45,14 @@ class ProviderLogIn with ChangeNotifier {
     childImageUrl = childDiaryPreview['imageUrl'];
 
     notifyListeners();
-    print("notifyListers() on");
+    print("Provider_LogIn notifyListers() on");
 
     //값 바뀐다는 걸 알려줌
-    print(parentCorrectedText);
-    print(parentImageUrl);
-    print(childCorrectedText);
-    print(childImageUrl);
+    // print(completeList);
+    // print(parentCorrectedText);
+    // print(parentImageUrl);
+    // print(childCorrectedText);
+    // print(childImageUrl);
   }
 
   List<dynamic>? getCompleteListData() {

@@ -1,5 +1,6 @@
 import 'package:Front_Flutter/screens/providers/provider_login.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart'; // 날짜 형식을 사용하기 위한 패키지
 
@@ -9,6 +10,8 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 import 'package:provider/provider.dart';
+
+import '../providers/provider_home.dart';
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -28,22 +31,8 @@ class _HomeState extends State<Home> {
   }
 
   DateTime _selectedDate = DateTime.now();
-  // DateTime _selectedDate = DateTime(2024,02,18);
-  final Map<DateTime, bool> _markedDates = {
-    DateTime(2024,02,02) : true,
-    DateTime(2024,02,04) : true,
-    DateTime(2024,02,06) : true,
-    DateTime(2024,02,08) : true,
-    DateTime(2024,02,10) : true,
-    DateTime(2024,02,12) : true,
-    DateTime(2024,02,14) : true,
-    DateTime(2024,02,16) : true,
-    DateTime(2024,02,18) : true,
-    DateTime(2024,02,20) : true,
-    DateTime(2024,02,22) : true,
-    DateTime(2024,02,24) : true,
-    DateTime(2024,02,26) : true,
-  };
+  var _markedDates = <DateTime, bool>{};
+
 
   Widget calendar() {
     final width = MediaQuery.of(context).size.width;
@@ -198,10 +187,19 @@ class _HomeState extends State<Home> {
           final isSelected = currentDate.year == _selectedDate.year &&
               currentDate.month == _selectedDate.month &&
               currentDate.day == _selectedDate.day;
+
+          late List<dynamic>? completeList = context.read<ProviderLogIn>().getCompleteListData();
+
+          completeList?.forEach( (dateString) {
+            DateTime date = DateFormat('E, dd MMM yyyy HH:mm:ss').parse(dateString); // 문자열을 DateTime으로 변환
+            _markedDates[date] = true; // 해당 날짜를 true로 설정
+          });
+
           final writeDiary = _markedDates[currentDate] ?? false;
 
           // 전달과 다음달의 날짜인지 확인합니다.
           final isOutsideMonth = currentDate.month != _selectedDate.month;
+
 
           if (isOutsideMonth) {
             return Container(
@@ -279,8 +277,10 @@ class _HomeState extends State<Home> {
     return InkWell(
       onTap: () {
         // 선택된 날짜 넘겨주기
-        // context.read<Move>().setSelectedDate(_selectedDate);
-        // context.read<Move>().moveTo(1);
+        context.read<ProviderHome>().setSelectedDate(_selectedDate);
+        print('소통하기 슈웃~');
+        context.read<ProviderHome>().setData();
+        context.go('/conversation');
       },
       child: Container(
         height: height * 0.45,
@@ -342,8 +342,8 @@ class _HomeState extends State<Home> {
 
     final selectedDateInfo = DateFormat('yyyy년 MM월 dd일').format(_selectedDate); // 선택된 날짜의 정보를 포맷합니다.
     final isDiaryWritten = _markedDates[_selectedDate] ?? false; // 선택된 날짜에 일기가 쓰여있는지 확인합니다.
-    print(_markedDates);
-    print(isDiaryWritten);
+    // print(_markedDates);
+    // print(isDiaryWritten);
 
     return Container(
       width: width*0.96,
@@ -482,6 +482,8 @@ class _HomeState extends State<Home> {
     //   print(index);
     // });
     context.watch<ProviderLogIn>();
+    // 추가
+    context.watch<ProviderHome>();
     print('아빠 안잔다~');
 
 

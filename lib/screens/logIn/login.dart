@@ -173,19 +173,6 @@ class _LogInState extends State<LogIn> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    // /home
-    Future<void> fetchHome() async {
-      // var url = Uri.http('52.79.242.219:8000', '/home', {'pid': '0', 'date': '${DateFormat('yyyy-MM-dd').format(_selectedDate)}'});
-      var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': '2024-02-18'});
-      print("fetchHome get요청들어갑니다~");
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
-        context.read<ProviderLogIn>().setData(jsonResponse);
-      } else {
-        throw Exception('FetchHome 에러다 ㅅㅂ~~~');
-      }
-    }
 
     return Container(
       width: width*0.9,
@@ -197,8 +184,8 @@ class _LogInState extends State<LogIn> {
       ),
       child: TextButton(
         onPressed: () async {
-          print('login button press');
-          fetchHome();
+          print('로그인 슈웃~');
+          context.read<ProviderLogIn>().setData();
           context.go('/home');
         },
         child: Text(
