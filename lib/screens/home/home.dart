@@ -71,6 +71,8 @@ class _HomeState extends State<Home> {
             onPressed: () {
               setState(() {
                 _selectedDate = DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
+                context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
+                context.read<ProviderLogIn>().setData();
               });
             },
           ),
@@ -90,6 +92,8 @@ class _HomeState extends State<Home> {
             onPressed: () {
               setState(() {
                 _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+                context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
+                context.read<ProviderLogIn>().setData();
               });
             },
           ),
@@ -214,6 +218,8 @@ class _HomeState extends State<Home> {
               print(currentDate);
               setState(() {
                 _selectedDate = currentDate;
+                context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
+                context.read<ProviderLogIn>().setData();
               });
               // URL: /home/selectedDate
               // 프론트 -> 백: date = _selectedDate, pid = '0'
@@ -340,10 +346,12 @@ class _HomeState extends State<Home> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    final selectedDateInfo = DateFormat('yyyy년 MM월 dd일').format(_selectedDate); // 선택된 날짜의 정보를 포맷합니다.
+
     final isDiaryWritten = _markedDates[_selectedDate] ?? false; // 선택된 날짜에 일기가 쓰여있는지 확인합니다.
     // print(_markedDates);
     // print(isDiaryWritten);
+    late String? parentCorrectedText = context.read<ProviderLogIn>().getParentCorrectedText();
+    late String? parentImageUrl = context.read<ProviderLogIn>().getParentImageUrl();
 
     return Container(
       width: width*0.96,
@@ -357,7 +365,9 @@ class _HomeState extends State<Home> {
         ),
         child: Padding(
           padding: EdgeInsets.all(height*0.01,),
-          child: Row(
+          child:
+          isDiaryWritten?
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
@@ -374,10 +384,16 @@ class _HomeState extends State<Home> {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                    Text(
-                      isDiaryWritten ? '일기가 쓰여 있는 날' : '일기가 쓰여 있지 않아요',
-                      style: GoogleFonts.jua(
-                        fontSize: height*0.02,
+                    Container(
+                      width: width * 0.58,
+                      height: height * 0.062,
+                      child: Text(
+                        '$parentCorrectedText',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.jua(
+                          fontSize: height*0.02,
+                        ),
                       ),
                     ),
                   ],
@@ -391,12 +407,21 @@ class _HomeState extends State<Home> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Image.network(
-                  'https://as1.ftcdn.net/v2/jpg/04/22/49/54/1000_F_422495424_AkP6hAHiYBhNxZ3kZUBuYouedhej37a3.jpg',
+                  '$parentImageUrl',
                   fit: BoxFit.cover,
                 ),
               ),
             ],
-          ),
+          )
+              :Center(
+                child: Text(
+                  '일기가 쓰여 있지 않아요!',
+                  style: TextStyle(
+                    fontFamily: 'KNU_TRUTH',
+                    fontSize: width * 0.05,
+              ),
+            ),
+          )
         ),
       ),
     );
@@ -408,8 +433,10 @@ class _HomeState extends State<Home> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    final selectedDateInfo = DateFormat('yyyy년 MM월 dd일').format(_selectedDate);
     final isDiaryWritten = _markedDates[_selectedDate] ?? false;
+
+    late String? childCorrectedText = context.read<ProviderLogIn>().getChildCorrectedText();
+    late String? childImageUrl = context.read<ProviderLogIn>().getChildImageUrl();
 
     return Container(
       width: width*0.96,
@@ -423,16 +450,18 @@ class _HomeState extends State<Home> {
 
         child: Padding(
           padding: EdgeInsets.all(height*0.01,),
-          child: Row(
+          child:
+          isDiaryWritten?
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 padding: EdgeInsets.all(height*0.01,),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget> [
                     Text(
-                      '아이의 일기',
+                      '부모의 일기',
                       style: GoogleFonts.jua(
                         color: Color(0xff3B3B3B),
                         fontSize:  height*0.023,
@@ -440,10 +469,16 @@ class _HomeState extends State<Home> {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                    Text(
-                      isDiaryWritten ? '일기가 쓰여 있는 날' : '일기가 쓰여 있지 않아요',
-                      style: GoogleFonts.jua(
-                        fontSize: height*0.02,
+                    Container(
+                      width: width * 0.58,
+                      height: height * 0.062,
+                      child: Text(
+                        '$childCorrectedText',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.jua(
+                          fontSize: height*0.02,
+                        ),
                       ),
                     ),
                   ],
@@ -457,12 +492,21 @@ class _HomeState extends State<Home> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Image.network(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqEo0dR9xci_ZoDCV1ldW1EEft0TlZZo5zcg&usqp=CAU.jpg',
+                  '$childImageUrl',
                   fit: BoxFit.cover,
                 ),
               ),
             ],
-          ),
+          )
+              :Center(
+                child: Text(
+                  '일기가 쓰여 있지 않아요!',
+                  style: TextStyle(
+                    fontFamily: 'KNU_TRUTH',
+                    fontSize: width * 0.05,
+                  ),
+            ),
+          )
         ),
       ),
     );
@@ -482,8 +526,6 @@ class _HomeState extends State<Home> {
     //   print(index);
     // });
     context.watch<ProviderLogIn>();
-    // 추가
-    context.watch<ProviderHome>();
     print('아빠 안잔다~');
 
 

@@ -185,7 +185,10 @@ class _LogInState extends State<LogIn> {
       child: TextButton(
         onPressed: () async {
           print('로그인 슈웃~');
+          context.read<ProviderLogIn>().setSelectedDate(DateTime.now());
           context.read<ProviderLogIn>().setData();
+          //context.read<ProviderLogIn>(listen: false).controller.sink.add(0);
+
           context.go('/home');
         },
         child: Text(
