@@ -10,7 +10,6 @@ class ProviderLogIn with ChangeNotifier {
 
   late Map<String, dynamic> jsonResponse;
   late List<dynamic> completeList = [];
-
   late var parentDiaryPreview;
   late String parentCorrectedText;
   late String parentImageUrl;
