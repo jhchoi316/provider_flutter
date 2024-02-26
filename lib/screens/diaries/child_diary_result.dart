@@ -137,7 +137,7 @@ class _ChildResultState extends State<ChildResult> {
       ),
       child: TextButton(
         onPressed: () {
-          context.go('/home/conversation');
+          context.go('/conversation');
           context.read<ProviderHome>().setSelectedDate(DateTime.now());
           context.read<ProviderHome>().setData();
         },

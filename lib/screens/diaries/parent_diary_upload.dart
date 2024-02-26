@@ -181,13 +181,19 @@ class _ParentUploadState extends State<ParentUpload> {
           children: [
             Text(
               '작성 완료',
-              style: TextStyle(color: Colors.white, fontSize: height * 0.025, fontFamily: 'KNU_TRUTH'
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: height * 0.023,
+                  fontFamily: 'KNU_TRUTH'
               ),
             ),
             SizedBox(width: 0),
             Text(
               'Hoàn thành việc',
-              style: TextStyle(color: Colors.white, fontSize: height * 0.015, fontFamily: 'KNU_TRUTH'
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: height * 0.012,
+                  fontFamily: 'KNU_TRUTH'
               ),
             ),
           ],

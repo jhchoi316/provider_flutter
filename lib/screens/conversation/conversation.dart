@@ -473,7 +473,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
                       SizedBox(height: height * 0.01,),
                       //오늘 날짜
                       Text(
-                          DateFormat('yyyy / MM / dd (E) ').format(selectedDate),                          style: TextStyle(
+                          DateFormat('yyyy / MM / dd  EEEE ').format(selectedDate),                          style: TextStyle(
                               color: Colors.white,
                               fontSize:15,
                               fontFamily: 'KNU_TRUTH'

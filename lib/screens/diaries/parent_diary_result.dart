@@ -300,7 +300,7 @@ class _ParentResultState extends State<ParentResult> {
             SizedBox(width: 0),
             Text(
               'Đi đến trang chủ',
-              style: TextStyle(color: Colors.white, fontSize: height * 0.015,fontFamily: 'KNU_TRUTH'),
+              style: TextStyle(color: Colors.white, fontSize: height * 0.013,fontFamily: 'KNU_TRUTH'),
             ),
           ],
         ),

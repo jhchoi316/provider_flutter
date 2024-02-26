@@ -9,6 +9,7 @@ import 'screens/diaries/child_diary_result.dart';
 import 'screens/diaries/parent_diary_upload.dart';
 import 'screens/home/home.dart';
 import 'screens/logIn/login.dart';
+import 'screens/providers/provider_child_camera.dart';
 import 'screens/providers/provider_home.dart';
 import 'screens/providers/provider_login.dart';
 import 'screens/providers/provider_parent_upload.dart';
@@ -23,9 +24,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ProviderLogIn()),
         ChangeNotifierProvider(create: (_) => ProviderHome()),
         ChangeNotifierProvider(create: (_) => ProviderParentUpload()),
-        // ChangeNotifierProvider(create: (_) => ProviderParentResult()),
-        // ChangeNotifierProvider(create: (_) => ProviderChildUpload()),
-        // ChangeNotifierProvider(create: (_) => ProviderChildResult()),
+        ChangeNotifierProvider(create: (_) => ProviderChildCamera()),
 
         // ChangeNotifierProvider(create: (_) => ProviderReport()),
         // ChangeNotifierProvider(create: (_) => ProviderSettings()),
@@ -58,46 +57,46 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => LogIn(),
       ),
       StatefulShellRoute.indexedStack(
-          builder: (context, state, navigationShell) =>
+        builder: (context, state, navigationShell) =>
             ScaffoldWithNavBar(navigationShell:navigationShell),
-          branches: [
-            StatefulShellBranch(
-                routes: <RouteBase> [
-                  GoRoute(
-                    name: 'Home',
-                    path: "/home",
-                    builder: (context, state) => Home(),
-                  ),
-                ],
-            ),
-            StatefulShellBranch(
-              routes: <RouteBase> [
-                GoRoute(
-                  name: 'Conversation',
-                  path: "/conversation",
-                  builder: (context, state) => Conversation(),
-                ),
-              ],
-            ),
-            StatefulShellBranch(
-              routes: <RouteBase> [
-                GoRoute(
-                  name: 'Report',
-                  path: "/report",
-                  builder: (context, state) => Report(),
-                ),
-              ],
-            ),
-            StatefulShellBranch(
-              routes: <RouteBase> [
-                GoRoute(
-                  name: 'Settings',
-                  path: "/settings",
-                  builder: (context, state) => Settings(),
-                ),
-              ],
-            )
-          ],
+        branches: [
+          StatefulShellBranch(
+            routes: <RouteBase> [
+              GoRoute(
+                name: 'Home',
+                path: "/home",
+                builder: (context, state) => Home(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase> [
+              GoRoute(
+                name: 'Conversation',
+                path: "/conversation",
+                builder: (context, state) => Conversation(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase> [
+              GoRoute(
+                name: 'Report',
+                path: "/report",
+                builder: (context, state) => Report(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: <RouteBase> [
+              GoRoute(
+                name: 'Settings',
+                path: "/settings",
+                builder: (context, state) => Settings(),
+              ),
+            ],
+          )
+        ],
       ),
       GoRoute(
         name: 'ParentUpload',

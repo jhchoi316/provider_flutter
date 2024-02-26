@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class ProviderHome with ChangeNotifier {
-  StreamController<int> controller = StreamController.broadcast();
 
   late Map<String, dynamic> jsonResponse;
 

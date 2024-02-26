@@ -281,14 +281,17 @@ class _HomeState extends State<Home> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    final isDiaryWritten = markedDates[_selectedDate] ?? false;
 
     return InkWell(
       onTap: () {
-        // 선택된 날짜 넘겨주기
-        context.read<ProviderHome>().setSelectedDate(_selectedDate);
-        print('소통하기 슈웃~');
-        context.read<ProviderHome>().setData();
-        context.go('/conversation');
+        if(isDiaryWritten){
+          // 선택된 날짜 넘겨주기
+          context.read<ProviderHome>().setSelectedDate(_selectedDate);
+          print('소통하기 슈웃~');
+          context.read<ProviderHome>().setData();
+          context.go('/conversation');
+        }
       },
       child: Container(
         height: height * 0.45,

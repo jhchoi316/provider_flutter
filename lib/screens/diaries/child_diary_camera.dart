@@ -1,11 +1,12 @@
 import 'dart:io';
-import 'package:Front_Flutter/screens/providers/provider_child_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/provider_child_camera.dart';
 
 class ChildCamera extends StatefulWidget {
   const ChildCamera({Key? key}) : super(key: key);
@@ -188,7 +189,7 @@ class _ChildCameraState extends State<ChildCamera> {
 
             context.read<ProviderChildCamera>().setInput(pid, _image!, DateTime.now());
           }
-          context.go('/ParentResult');
+          context.go('/childResult');
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -200,7 +201,7 @@ class _ChildCameraState extends State<ChildCamera> {
             SizedBox(width: 0),
             Text(
               'Quay hình xong',
-              style: TextStyle(color: Color(0xff8DBFD2), fontSize: height * 0.015,fontFamily: 'KNU_TRUTH'),
+              style: TextStyle(color: Color(0xff8DBFD2), fontSize: height * 0.013,fontFamily: 'KNU_TRUTH'),
             ),
           ],
         ),
