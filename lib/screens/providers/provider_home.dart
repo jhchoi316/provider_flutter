@@ -86,7 +86,7 @@ class ProviderHome with ChangeNotifier {
 
 
     notifyListeners();
-    print("Provider_Home notifyListers() on");
+    print("Provider_Home notifyListeners() on");
 
     //test용
     parentCorrectedText = 'parentCorrectedTextparentCorrectedText1. parentCorrectedTextparentCorrectedText2.parentCorrectedTextparentCorrectedText3.';

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/provider_home.dart';
+import '../providers/provider_login.dart';
+
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
     required this.navigationShell,
@@ -36,7 +39,9 @@ class ScaffoldWithNavBar extends StatelessWidget {
               icon: Icon(Icons.menu_book),
               onPressed: () {
                 navigationShell.goBranch(1);
-                // context.watch<ProviderNavBar>();
+                // 오늘 날짜 띄우기
+                context.read<ProviderHome>().setSelectedDate(DateTime.now());
+                context.read<ProviderHome>().setData();
               },
             ),
             IconButton(

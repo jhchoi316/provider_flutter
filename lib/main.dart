@@ -1,13 +1,17 @@
+import 'package:Front_Flutter/screens/diaries/parent_diary_result.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/conversation/conversation.dart';
+import 'screens/diaries/child_diary_camera.dart';
+import 'screens/diaries/child_diary_result.dart';
 import 'screens/diaries/parent_diary_upload.dart';
 import 'screens/home/home.dart';
 import 'screens/logIn/login.dart';
 import 'screens/providers/provider_home.dart';
 import 'screens/providers/provider_login.dart';
+import 'screens/providers/provider_parent_upload.dart';
 import 'screens/report/report.dart';
 import 'screens/settings/setting.dart';
 import 'screens/widgets/scaffold_with_nav_bar.dart';
@@ -18,6 +22,11 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => ProviderLogIn()),
         ChangeNotifierProvider(create: (_) => ProviderHome()),
+        ChangeNotifierProvider(create: (_) => ProviderParentUpload()),
+        // ChangeNotifierProvider(create: (_) => ProviderParentResult()),
+        // ChangeNotifierProvider(create: (_) => ProviderChildUpload()),
+        // ChangeNotifierProvider(create: (_) => ProviderChildResult()),
+
         // ChangeNotifierProvider(create: (_) => ProviderReport()),
         // ChangeNotifierProvider(create: (_) => ProviderSettings()),
 
@@ -94,6 +103,21 @@ class MyApp extends StatelessWidget {
         name: 'ParentUpload',
         path: "/parentUpload",
         builder: (context, state) => ParentUpload(),
+      ),
+      GoRoute(
+        name: 'ParentResult',
+        path: "/parentResult",
+        builder: (context, state) => ParentResult(),
+      ),
+      GoRoute(
+        name: 'ChildCamera',
+        path: "/childCamera",
+        builder: (context, state) => ChildCamera(),
+      ),
+      GoRoute(
+        name: 'ChildResult',
+        path: "/childResult",
+        builder: (context, state) => ChildResult(),
       ),
     ],
   );
