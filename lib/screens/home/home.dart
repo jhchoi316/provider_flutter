@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
   }
 
   DateTime _selectedDate = DateTime.now();
-  var _markedDates = <DateTime, bool>{};
+  var markedDates = <DateTime, bool>{};
 
 
   Widget calendar() {
@@ -167,6 +167,15 @@ class _HomeState extends State<Home> {
 
     // List<dynamic>? completedList = context.read<ProviderLogIn>().getCompleteListData();
     // print(completedList);
+    late List<dynamic>? completeList = context.read<ProviderLogIn>().getCompleteListData();
+    print("홈에서 comp $completeList");
+    markedDates= {};
+    completeList?.forEach( (dateString) {
+      DateTime date = DateFormat('E, dd MMM yyyy HH:mm:ss').parse(dateString); // 문자열을 DateTime으로 변환
+      markedDates[date] = true; // 해당 날짜를 true로 설정
+    });
+    print("홈에서 mark $markedDates");
+
 
     return Container(
       width: width*0.96,
@@ -181,6 +190,7 @@ class _HomeState extends State<Home> {
         itemCount: DateTime.daysPerWeek * 5, // 5주를 표시
         itemBuilder: (context, index) {
 
+          // _selectedDate = DateTime(2024,02,18);
           final currentDate = DateTime(_selectedDate.year, _selectedDate.month, index + 1 - DateTime(_selectedDate.year, _selectedDate.month, 1).weekday);
 
           final isToday = currentDate.year == DateTime.now().year &&
@@ -192,14 +202,7 @@ class _HomeState extends State<Home> {
               currentDate.month == _selectedDate.month &&
               currentDate.day == _selectedDate.day;
 
-          late List<dynamic>? completeList = context.read<ProviderLogIn>().getCompleteListData();
-
-          completeList?.forEach( (dateString) {
-            DateTime date = DateFormat('E, dd MMM yyyy HH:mm:ss').parse(dateString); // 문자열을 DateTime으로 변환
-            _markedDates[date] = true; // 해당 날짜를 true로 설정
-          });
-
-          final writeDiary = _markedDates[currentDate] ?? false;
+          final writeDiary = markedDates[currentDate] ?? false;
 
           // 전달과 다음달의 날짜인지 확인합니다.
           final isOutsideMonth = currentDate.month != _selectedDate.month;
@@ -215,16 +218,14 @@ class _HomeState extends State<Home> {
           return GestureDetector(
             onTap: () {
               // print("날짜 선택");
-              print(currentDate);
               setState(() {
+                print('GestureDector GET');
+
                 _selectedDate = currentDate;
                 context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
                 context.read<ProviderLogIn>().setData();
+
               });
-              // URL: /home/selectedDate
-              // 프론트 -> 백: date = _selectedDate, pid = '0'
-              // 백 -> 프론트: 해당 날짜 부모+아이 일기 미리보기(교정본,이미지url)
-              print('GestureDector GET');
             },
             child: Container(
               width: width*0.08,
@@ -279,6 +280,7 @@ class _HomeState extends State<Home> {
   Widget diaryCard() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
 
     return InkWell(
       onTap: () {
@@ -347,7 +349,7 @@ class _HomeState extends State<Home> {
     final height = MediaQuery.of(context).size.height;
 
 
-    final isDiaryWritten = _markedDates[_selectedDate] ?? false; // 선택된 날짜에 일기가 쓰여있는지 확인합니다.
+    final isDiaryWritten = markedDates[_selectedDate] ?? false; // 선택된 날짜에 일기가 쓰여있는지 확인합니다.
     // print(_markedDates);
     // print(isDiaryWritten);
     late String? parentCorrectedText = context.read<ProviderLogIn>().getParentCorrectedText();
@@ -433,7 +435,7 @@ class _HomeState extends State<Home> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    final isDiaryWritten = _markedDates[_selectedDate] ?? false;
+    final isDiaryWritten = markedDates[_selectedDate] ?? false;
 
     late String? childCorrectedText = context.read<ProviderLogIn>().getChildCorrectedText();
     late String? childImageUrl = context.read<ProviderLogIn>().getChildImageUrl();

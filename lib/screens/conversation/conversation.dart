@@ -103,8 +103,6 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     late String? parentText = context.read<ProviderHome>().getParentText();
     late String? parentChangedText = context.read<ProviderHome>().getParentChangedText();
     late String? parentImageUrl = context.read<ProviderHome>().getParentImageUrl();
-    late String? parentCharacterUrl = context.read<ProviderHome>().getParentCharacterUrl();
-    late String? parentQuestion = context.read<ProviderHome>().getParentQuestion();
 
 
     return Container(
@@ -122,8 +120,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
               borderRadius: BorderRadius.circular(20),
               child: Image.network(
                 // 여기에 parentImageUrl 표시
-                 '${parentImageUrl}',
-                //'https://as1.ftcdn.net/v2/jpg/04/22/49/54/1000_F_422495424_AkP6hAHiYBhNxZ3kZUBuYouedhej37a3.jpg',
+                '${parentImageUrl}',
                 fit: BoxFit.cover,
               ),
             ),
@@ -170,7 +167,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
                                   children: [
                                     SizedBox(width: width * 0.05),
                                     Container(
-                                      color: Colors.yellow,
+                                      color: Colors.white,
                                       width: width * 0.645,
                                       // Text 박스 사이즈 변경
                                       height: 6 * (height * 0.02 * 1.2),
@@ -284,6 +281,9 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    late String? childChangedText = context.read<ProviderHome>().getChildChangedText();
+    late String? childImageUrl = context.read<ProviderHome>().getChildImageUrl();
+
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -299,7 +299,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
               borderRadius: BorderRadius.circular(20),
               child: Image.network(
                 // 여기에 childImageUrl 표시
-                'https://as1.ftcdn.net/v2/jpg/04/22/49/54/1000_F_422495424_AkP6hAHiYBhNxZ3kZUBuYouedhej37a3.jpg',
+                '$childImageUrl',
                 fit: BoxFit.cover,
               ),
             ),
@@ -351,9 +351,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
                                       height: 9 * (height * 0.02 * 1.2),
                                       child: SingleChildScrollView(
                                         child: Text(
-                                          // 여기에 childCorrectedText + childTranslatedText 표시
-                                          // 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트,
-                                          '줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트,',
+                                          '$childChangedText',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: height * 0.02,
@@ -390,7 +388,10 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return  Container(
+    late String? parentCharacterUrl = context.read<ProviderHome>().getParentCharacterUrl();
+    late String? childCharacterUrl = context.read<ProviderHome>().getChildCharacterUrl();
+
+    return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -400,7 +401,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
             },
             child: Image.asset(
               // 여기에 parentCharacterUrl 표시
-              'assets/imageP.png',
+              '$parentCharacterUrl',
               width: 150,
               height: 250,
             ),
@@ -414,7 +415,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
             },
             child: Image.asset(
               // 여기에 childCharacterUrl 표시
-              'assets/imageC.png',
+              '$childCharacterUrl',
               width: 150,
               height: 250,
             ),
@@ -428,21 +429,12 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    // final DateTime? _selectedDate = context.read<Move>().getSeledtedDate();
-
-
 
     context.watch<ProviderHome>();
     print("Conversation 페이지 아빠 안잔다~");
 
+    late DateTime selectedDate = context.read<ProviderHome>().getSelectedDate();
 
-    // URL: /home/conversation
-    // 프론트 -> 백: date = _selectedDate, pid = '0'
-    // 백 -> 프론트: 부모+아이 일기 미리보기(교정본,이미지url) 캐릭터 url
-    // showParentCorrectedText = ''
-    // showParentTranslatedText = ''
-    // parentCorrectedDiary[0]~parentCorrectedDiary.length
-    // parentTranslatedDiary[0]~parentTranslatedDiary.length
 
     return Scaffold(
         body: Column(
@@ -481,8 +473,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
                       SizedBox(height: height * 0.01,),
                       //오늘 날짜
                       Text(
-                          DateFormat('yyyy년 MM월 dd일 EEEE').format(DateTime.now()),
-                          style: TextStyle(
+                          DateFormat('yyyy / MM / dd (E) ').format(selectedDate),                          style: TextStyle(
                               color: Colors.white,
                               fontSize:15,
                               fontFamily: 'KNU_TRUTH'
@@ -508,6 +499,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
 }
 
 void _showImagePopupParent(BuildContext context) {
+  late String? parentQuestion = context.read<ProviderHome>().getParentQuestion();
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -522,7 +514,8 @@ void _showImagePopupParent(BuildContext context) {
             Positioned.fill(
                 child: Center(
                   // 여기에 parentQuestion 표시
-                child: Text('어떤 요리를 가장 좋아해?',
+                child: Text(
+                  '$parentQuestion?',
                     style: TextStyle(fontSize: 20,fontFamily: 'KNU_TRUTH'),
                   ),
                 )
@@ -535,6 +528,7 @@ void _showImagePopupParent(BuildContext context) {
 }
 
 void _showImagePopupChild(BuildContext context) {
+  late String? childQuestion = context.read<ProviderHome>().getChildQuestion();
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -549,7 +543,7 @@ void _showImagePopupChild(BuildContext context) {
                 child: Center(
                   child: Text(
                     // 여기에 childQuestion 표시
-                  '뭘 만들었는지 말해줘!',
+                  '$childQuestion',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 20,fontFamily: 'KNU_TRUTH'),
                   ),
