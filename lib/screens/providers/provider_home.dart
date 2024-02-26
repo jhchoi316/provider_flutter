@@ -11,19 +11,33 @@ class ProviderHome with ChangeNotifier {
   late Map<String, dynamic> jsonResponse;
 
   late var parentDiary;
-  late String parentText;
+  late String parentText = '';
   late String parentCorrectedText;
   late String parentTranslatedText;
   late String parentImageUrl;
   late String parentCharacterUrl;
   late String parentQuestion;
 
+  late List<String> parentCorrectedTextList = [];
+  late List<String> parentTranslatedTextList = [];
+  late List<String> parentChangedTextList = [];
+
+  late String parentChangedText = '';
+
+
   late var childDiary;
+  late String childText = '';
   late String childCorrectedText;
   late String childTranslatedText;
   late String childImageUrl;
   late String childCharacterUrl;
   late String childQuestion;
+
+  late List<String> childCorrectedTextList = [];
+  late List<String> childTranslatedTextList = [];
+  late List<String> childChangedTextList = [];
+
+  late String childChangedText = '';
 
   late DateTime selectedDate;
 
@@ -69,8 +83,19 @@ class ProviderHome with ChangeNotifier {
     childCharacterUrl = childDiary['characterUrl'];
     childQuestion = childDiary['question'];
 
+
+
     notifyListeners();
     print("Provider_Home notifyListers() on");
+
+    //test용
+    parentCorrectedText = 'parentCorrectedTextparentCorrectedText1. parentCorrectedTextparentCorrectedText2.parentCorrectedTextparentCorrectedText3.';
+    parentTranslatedText = 'parentTranslatedTextparentTranslatedText1. parentTranslatedTextparentTranslatedText2. parentTranslatedTextparentTranslatedText3.';
+
+
+    setParentChangedText(parentCorrectedText, parentTranslatedText);
+    setChildChangedText(childCorrectedText, childTranslatedText);
+
 
     // //값 바뀐다는 걸 알려줌
     // print(parentText);
@@ -85,6 +110,12 @@ class ProviderHome with ChangeNotifier {
     // print(childCharacterUrl);
     // print(childQuestion);
 
+    print('setData 끝');
+
+  }
+
+  String? getParentText() {
+    return parentText;
   }
 
   String? getParentCorrectedText() {
@@ -95,7 +126,32 @@ class ProviderHome with ChangeNotifier {
     return parentTranslatedText;
   }
 
+  void setParentChangedText(String parentCorrectedText, String parentTranslatedText) async {
+    parentCorrectedTextList = parentCorrectedText.split('.');
+    parentTranslatedTextList = parentTranslatedText.split('.');
+
+    // for (int i = 0; i < parentCorrectedText.length; i++) {
+    //   parentCorrectedTextList.addAll(parentCorrectedText[i].split('.'));
+    //   parentTranslatedTextList.addAll(parentTranslatedText[i].split('.'));
+    // }
+
+    for (int i = 0; i < parentCorrectedTextList.length ; i++) {
+      parentChangedText += parentCorrectedTextList[i];
+      parentChangedText += "\n";
+      parentChangedText += parentTranslatedTextList[i];
+      parentChangedText += "\n";
+    }
+    print(parentCorrectedTextList.length);
+    print('setParentChangedText 전처리 끝');
+
+  }
+
+  String? getParentChangedText() {
+    return parentChangedText;
+  }
+
   String? getParentImageUrl() {
+    parentImageUrl = 'https://i.pinimg.com/736x/90/84/5c/90845c0ec45eba7c8c75d2b08a74a18f.jpg';
     return parentImageUrl;
   }
 
@@ -106,6 +162,18 @@ class ProviderHome with ChangeNotifier {
   String? getParentQuestion() {
     return parentQuestion;
   }
+
+
+  void setChildChangedText(String childCorrectedText, String childTranslatedText) async {
+    // childChangedText = childCorrectedText + childTranslatedText;
+
+
+  }
+
+  String? getChildChangedText() {
+    return childChangedText;
+  }
+
 
   String? getChildCorrectedText() {
     return childCorrectedText;
