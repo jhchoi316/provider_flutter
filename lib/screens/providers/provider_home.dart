@@ -20,13 +20,10 @@ class ProviderHome with ChangeNotifier {
 
   late List<String> parentCorrectedTextList = [];
   late List<String> parentTranslatedTextList = [];
-  late List<String> parentChangedTextList = [];
 
   late String parentChangedText = '';
 
-
   late var childDiary;
-  late String childText = '';
   late String childCorrectedText;
   late String childTranslatedText;
   late String childImageUrl;
@@ -35,7 +32,6 @@ class ProviderHome with ChangeNotifier {
 
   late List<String> childCorrectedTextList = [];
   late List<String> childTranslatedTextList = [];
-  late List<String> childChangedTextList = [];
 
   late String childChangedText = '';
 
@@ -43,8 +39,8 @@ class ProviderHome with ChangeNotifier {
 
   // home/conversation
   Future<Map<String, dynamic>> fetchConversation() async {
-    // var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(selectedDate)});
-    var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': '2024-02-18'});
+    var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(selectedDate)});
+    // var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': '2024-02-18'});
     print("fetchConversation get요청들어갑니다~");
     var response = await http.get(url);
     if (response.statusCode == 200) {
@@ -84,13 +80,9 @@ class ProviderHome with ChangeNotifier {
     childQuestion = childDiary['question'];
 
 
-
-    notifyListeners();
-    print("Provider_Home notifyListeners() on");
-
     //test용
-    parentCorrectedText = 'parentCorrectedTextparentCorrectedText1. parentCorrectedTextparentCorrectedText2.parentCorrectedTextparentCorrectedText3.';
-    parentTranslatedText = 'parentTranslatedTextparentTranslatedText1. parentTranslatedTextparentTranslatedText2. parentTranslatedTextparentTranslatedText3.';
+    // parentCorrectedText = 'parentCorrectedTextparentCorrectedText1. parentCorrectedTextparentCorrectedText2.parentCorrectedTextparentCorrectedText3.';
+    // parentTranslatedText = 'parentTranslatedTextparentTranslatedText1. parentTranslatedTextparentTranslatedText2. parentTranslatedTextparentTranslatedText3.';
 
 
     setParentChangedText(parentCorrectedText, parentTranslatedText);
@@ -109,7 +101,8 @@ class ProviderHome with ChangeNotifier {
     // print(childImageUrl);
     // print(childCharacterUrl);
     // print(childQuestion);
-
+    notifyListeners();
+    print("Provider_Home notifyListeners() on");
     print('setData 끝');
 
   }
@@ -127,13 +120,9 @@ class ProviderHome with ChangeNotifier {
   }
 
   void setParentChangedText(String parentCorrectedText, String parentTranslatedText) async {
+    parentChangedText = '';
     parentCorrectedTextList = parentCorrectedText.split('.');
     parentTranslatedTextList = parentTranslatedText.split('.');
-
-    // for (int i = 0; i < parentCorrectedText.length; i++) {
-    //   parentCorrectedTextList.addAll(parentCorrectedText[i].split('.'));
-    //   parentTranslatedTextList.addAll(parentTranslatedText[i].split('.'));
-    // }
 
     for (int i = 0; i < parentCorrectedTextList.length ; i++) {
       parentChangedText += parentCorrectedTextList[i];
@@ -141,9 +130,8 @@ class ProviderHome with ChangeNotifier {
       parentChangedText += parentTranslatedTextList[i];
       parentChangedText += "\n";
     }
-    print(parentCorrectedTextList.length);
+    print(parentChangedText);
     print('setParentChangedText 전처리 끝');
-
   }
 
   String? getParentChangedText() {
@@ -151,7 +139,7 @@ class ProviderHome with ChangeNotifier {
   }
 
   String? getParentImageUrl() {
-    parentImageUrl = 'https://i.pinimg.com/736x/90/84/5c/90845c0ec45eba7c8c75d2b08a74a18f.jpg';
+    // parentImageUrl = 'https://i.pinimg.com/736x/90/84/5c/90845c0ec45eba7c8c75d2b08a74a18f.jpg';
     return parentImageUrl;
   }
 
@@ -165,8 +153,18 @@ class ProviderHome with ChangeNotifier {
 
 
   void setChildChangedText(String childCorrectedText, String childTranslatedText) async {
-    // childChangedText = childCorrectedText + childTranslatedText;
+    childChangedText = '';
+    childCorrectedTextList = childCorrectedText.split('.');
+    childTranslatedTextList = childTranslatedText.split('.');
 
+    for (int i = 0; i < childCorrectedTextList.length ; i++) {
+      childChangedText += childCorrectedTextList[i];
+      childChangedText += "\n";
+      childChangedText += childTranslatedTextList[i];
+      childChangedText += "\n";
+    }
+    print(childChangedText);
+    print('setChildChangedText 전처리 끝');
 
   }
 

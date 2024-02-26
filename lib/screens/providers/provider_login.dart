@@ -17,12 +17,12 @@ class ProviderLogIn with ChangeNotifier {
   late String childCorrectedText;
   late String childImageUrl;
 
-  late DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
 
   // /home
   Future<Map<String, dynamic>> fetchHome() async {
      var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(_selectedDate)});
-    //var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': '2024-02-18'});
+    // var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': '2024-02-18'});
     print("fetchHome get요청들어갑니다~");
 
     var response = await http.get(url);
@@ -42,7 +42,7 @@ class ProviderLogIn with ChangeNotifier {
   }
 
   void setData() async {
-    print("setData()시작!");
+    print("Provider Login setData()시작!");
     jsonResponse = await fetchHome();
     bool isDone = false;
     print("Home을 위한 데이터 받음!");
@@ -68,7 +68,6 @@ class ProviderLogIn with ChangeNotifier {
   }
 
   List<dynamic>? getCompleteListData() {
-
     return completeList;
   }
 
