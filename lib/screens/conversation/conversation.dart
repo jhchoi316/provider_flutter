@@ -120,7 +120,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
               borderRadius: BorderRadius.circular(20),
               child: Image.network(
                 // 여기에 parentImageUrl 표시
-                '${parentImageUrl}',
+                '$parentImageUrl',
                 fit: BoxFit.cover,
               ),
             ),

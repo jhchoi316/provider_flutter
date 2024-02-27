@@ -1,4 +1,5 @@
 import 'package:Front_Flutter/screens/providers/provider_child_camera.dart';
+import 'package:Front_Flutter/screens/providers/provider_parent_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +21,7 @@ class _ChildResultState extends State<ChildResult> {
   // 현재는 아무 파일 받아옴 <- assets/example0.png
   //통신 URL: /home/conversation
   //통신: pid(variable.dart 내), date
+  late String? imageUrl = context.read<ProviderChildCamera>().getImageUrl();
 
   Widget showImage() {
     final width = MediaQuery.of(context).size.width;
@@ -29,10 +31,9 @@ class _ChildResultState extends State<ChildResult> {
       width: width,
       height: height * 0.45,
       child: Container(
-        child: Image.asset(
-            'assets/example0.png',
-            fit: BoxFit.cover
-          // 클릭하면 이미지만 확인하게 하는 코드 추가
+        child: Image.network(
+          '$imageUrl',
+          fit: BoxFit.cover,
         ),
       ),
     );
@@ -41,7 +42,9 @@ class _ChildResultState extends State<ChildResult> {
   Widget showDiary() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    late String? changedText = context.read<ProviderChildCamera>().getChangedText();
 
+    context.read<ProviderParentUpload>().getChangedText();
     return Container(
       color: Colors.white,
       width: width,
@@ -97,8 +100,8 @@ class _ChildResultState extends State<ChildResult> {
               child: SingleChildScrollView(
                 child: Text(
                   // 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트,
-                  '줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트,',
-                  style: TextStyle(
+                      '$changedText',
+                      style: TextStyle(
                       color: Colors.black,
                       fontSize: height * 0.02,
                       fontFamily: 'KNU_TRUTH'

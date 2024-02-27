@@ -1,4 +1,3 @@
-import 'package:Front_Flutter/screens/diaries/parent_diary_result.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'screens/conversation/conversation.dart';
 import 'screens/diaries/child_diary_camera.dart';
 import 'screens/diaries/child_diary_result.dart';
+import 'screens/diaries/parent_diary_result.dart';
 import 'screens/diaries/parent_diary_upload.dart';
 import 'screens/home/home.dart';
 import 'screens/logIn/login.dart';

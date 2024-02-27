@@ -16,14 +16,21 @@ class ProviderParentUpload with ChangeNotifier {
   late File? image;
   late DateTime selectedDate;
 
-
   late String correctedText;
   late String translatedText;
-  late String imageUrl;
+  late String imageUrl = '';
+
+  late String changedText = '';
+  late List<String> correctedTextList = [];
+  late List<String> translatedTextList = [];
 
   // /home/parent
   Future<Map<String, dynamic>> writeParentUpload(String pid, String text, File image, DateTime selectedDate) async {
     print("WriteParentUpload 요청");
+    print(pid);
+    print(text);
+    print(DateFormat('yyyy-MM-dd').format(selectedDate));
+    print(image);
     try {
       var url = Uri.http('54.180.153.57:5000', '/home/parent');
 
@@ -33,12 +40,12 @@ class ProviderParentUpload with ChangeNotifier {
         ..fields['selectedDate'] = DateFormat('yyyy-MM-dd').format(selectedDate); // 사용자가 입력한 text
 
 
-    var multipartFile = await http.MultipartFile.fromPath(
+      var multipartFile = await http.MultipartFile.fromPath(
         'image',
         image.path,
         contentType: MediaType('image', 'jpeg'),
       );
-      // 생성된 MultipartFile 객체를 요청에 추가
+
       request.files.add(multipartFile);
 
       var response = await request.send().timeout(Duration(seconds: 1000));
@@ -84,9 +91,10 @@ class ProviderParentUpload with ChangeNotifier {
     imageUrl = jsonResponse['imageUrl'];
     translatedText = jsonResponse['translatedText'];
 
-
     notifyListeners();
     print("Provider_Parent_Upload notifyListeners() on");
+
+    setChangedText(correctedText, translatedText);
 
     //값 바뀐다는 걸 알려줌
     print(correctedText);
@@ -95,12 +103,25 @@ class ProviderParentUpload with ChangeNotifier {
     print(text);
   }
 
-  String? getCorrectedText() {
-    return correctedText;
+  void setChangedText(String correctedText, String translatedText) async {
+    changedText = '';
+    correctedTextList = correctedText.split('.');
+    translatedTextList = translatedText.split('.');
+
+    for (int i = 0; i < translatedTextList.length ; i++) {
+      changedText += correctedTextList[i];
+      changedText += "\n";
+      changedText += translatedTextList[i];
+      changedText += "\n";
+    }
+    print(changedText);
+    print('changedText 전처리 끝');
   }
-  String? getTranslatedText() {
-    return translatedText;
+
+  String? getChangedText() {
+    return changedText;
   }
+
   String? getImageUrl() {
     return imageUrl;
   }

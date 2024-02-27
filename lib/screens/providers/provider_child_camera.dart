@@ -19,6 +19,10 @@ class ProviderChildCamera with ChangeNotifier {
   late String translatedText;
   late String imageUrl;
 
+  late String changedText = '';
+  late List<String> correctedTextList = [];
+  late List<String> translatedTextList = [];
+
   // /home/parent
   Future<Map<String, dynamic>> writeChildCamera(String pid, File image, DateTime selectedDate) async {
     print("WriteParentUpload 요청");
@@ -83,17 +87,31 @@ class ProviderChildCamera with ChangeNotifier {
     notifyListeners();
     print("Provider_Child_Camera notifyListeners() on");
 
+    setChangedText(correctedText, translatedText);
+
     //값 바뀐다는 걸 알려줌
     print(correctedText);
     print(translatedText);
     print(imageUrl);
   }
 
-  String? getCorrectedText() {
-    return correctedText;
+  void setChangedText(String correctedText, String translatedText) async {
+    changedText = '';
+    correctedTextList = correctedText.split('.');
+    translatedTextList = translatedText.split('.');
+
+    for (int i = 0; i < translatedTextList.length ; i++) {
+      changedText += correctedTextList[i];
+      changedText += "\n";
+      changedText += translatedTextList[i];
+      changedText += "\n";
+    }
+    print(changedText);
+    print('changedText 전처리 끝');
   }
-  String? getTranslatedText() {
-    return translatedText;
+
+  String? getChangedText() {
+    return changedText;
   }
   String? getImageUrl() {
     return imageUrl;

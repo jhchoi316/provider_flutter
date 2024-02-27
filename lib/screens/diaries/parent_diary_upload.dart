@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:Front_Flutter/screens/providers/provider_parent_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +10,8 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/provider_parent_upload.dart';
 
 class ParentUpload extends StatefulWidget {
   const ParentUpload({Key? key}) : super(key: key);
@@ -169,10 +170,11 @@ class _ParentUploadState extends State<ParentUpload> {
           // if (_image != null) { // 작성한 text가 null인지 아닌지 확인) {
             String pid = "0";
             //   String text = _textController.text;
-            String text = "사용자가 입력한 텍스트";
-            // File image = _image; // 사용자가 선택한 이미지 파일
+            String text = "$_textController.text";
+            File image = File(_image!.path); // 사용자가 선택한 이미지 파일
 
-           context.read<ProviderParentUpload>().setInput(pid, text, _image!, DateTime.now());
+            print(image);
+           context.read<ProviderParentUpload>().setInput(pid, text, image!, DateTime.now());
           }
           context.go('/ParentResult');
         },

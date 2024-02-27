@@ -13,7 +13,7 @@ class ProviderHome with ChangeNotifier {
   late String parentText = '';
   late String parentCorrectedText;
   late String parentTranslatedText;
-  late String parentImageUrl;
+  late String parentImageUrl = '';
   late String parentCharacterUrl;
   late String parentQuestion;
 
@@ -25,7 +25,7 @@ class ProviderHome with ChangeNotifier {
   late var childDiary;
   late String childCorrectedText;
   late String childTranslatedText;
-  late String childImageUrl;
+  late String childImageUrl = '';
   late String childCharacterUrl;
   late String childQuestion;
 
@@ -38,8 +38,8 @@ class ProviderHome with ChangeNotifier {
 
   // home/conversation
   Future<Map<String, dynamic>> fetchConversation() async {
-    var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(selectedDate)});
-    // var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': '2024-02-18'});
+    // var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(selectedDate)});
+    var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': '2024-02-24'});
     print("fetchConversation get요청들어갑니다~");
     var response = await http.get(url);
     if (response.statusCode == 200) {
@@ -90,8 +90,8 @@ class ProviderHome with ChangeNotifier {
 
     // //값 바뀐다는 걸 알려줌
     // print(parentText);
-    // print(parentCorrectedText);
-    // print(parentTranslatedText);
+    print(parentCorrectedText);
+    print(parentTranslatedText);
     // print(parentImageUrl);
     // print(parentCharacterUrl);
     // print(parentQuestion);

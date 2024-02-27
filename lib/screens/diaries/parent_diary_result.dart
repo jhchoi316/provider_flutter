@@ -18,6 +18,7 @@ class ParentResult extends StatefulWidget {
 
 class _ParentResultState extends State<ParentResult> {
 
+  late String? imageUrl = context.read<ProviderParentUpload>().getImageUrl();
 
   Widget showImage() {
     final width = MediaQuery.of(context).size.width;
@@ -26,12 +27,9 @@ class _ParentResultState extends State<ParentResult> {
     return Container(
       width: width,
       height: height * 0.45,
-      child: Container(
-        child: Image.asset(
-            'assets/example0.png',
-            fit: BoxFit.cover
-          // 클릭하면 이미지만 확인하게 하는 코드 추가
-        ),
+      child: Image.network(
+          '$imageUrl',
+          fit: BoxFit.cover,
       ),
     );
   }
@@ -39,6 +37,11 @@ class _ParentResultState extends State<ParentResult> {
   Widget showDiary() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    late String? changedText = context.read<ProviderParentUpload>().getChangedText();
+    late String? imageUrl = context.read<ProviderParentUpload>().getImageUrl();
+    late String? text = context.read<ProviderParentUpload>().getText();
+
 
     return Container(
       width: width,
@@ -125,8 +128,7 @@ class _ParentResultState extends State<ParentResult> {
                                           height: 7 * (height * 0.02 * 1.2),
                                           child: SingleChildScrollView(
                                             child: Text(
-                                              //
-                                              '줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트,',
+                                              '$changedText',
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: height * 0.02,
@@ -195,7 +197,7 @@ class _ParentResultState extends State<ParentResult> {
                                           height: 7 * (height * 0.02 * 1.2),
                                           child: SingleChildScrollView(
                                             child: Text(
-                                              '',
+                                              '$text',
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: height * 0.02,
