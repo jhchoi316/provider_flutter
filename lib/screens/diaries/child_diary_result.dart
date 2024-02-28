@@ -17,15 +17,12 @@ class ChildResult extends StatefulWidget {
 }
 
 class _ChildResultState extends State<ChildResult> {
-  // 여기에 이미지 받아와서 담아둘 변수 설정
-  // 현재는 아무 파일 받아옴 <- assets/example0.png
-  //통신 URL: /home/conversation
-  //통신: pid(variable.dart 내), date
-  late String? imageUrl = context.read<ProviderChildCamera>().getImageUrl();
+  bool _isLoading = false; // Add this line to track loading state
 
   Widget showImage() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    late String? imageUrl = context.read<ProviderChildCamera>().getImageUrl();
 
     return Container(
       width: width,
@@ -139,11 +136,20 @@ class _ChildResultState extends State<ChildResult> {
         borderRadius: BorderRadius.circular(60.0),
       ),
       child: TextButton(
-        onPressed: () {
-          context.go('/conversation');
+        onPressed: () async {
+          setState(() {
+            _isLoading = true; // Set isLoading to true when login button is pressed
+          });
           context.read<ProviderHome>().setSelectedDate(DateTime.now());
-          context.read<ProviderHome>().setData();
+          await context.read<ProviderHome>().setData();
+          print("Child Result $_isLoading");
+
+          setState(() {
+            context.go('/conversation');
+            _isLoading = false; // Set isLoading to false after setData finishes
+          });
         },
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -154,7 +160,7 @@ class _ChildResultState extends State<ChildResult> {
             SizedBox(width: 0),
             Text(
               'Quay hình xong',
-              style: TextStyle(color: Colors.white, fontSize: height * 0.015,fontFamily: 'KNU_TRUTH'),
+              style: TextStyle(color: Colors.white, fontSize: height * 0.013,fontFamily: 'KNU_TRUTH'),
             ),
           ],
         ),
@@ -174,7 +180,9 @@ class _ChildResultState extends State<ChildResult> {
       // 키보드 overflow 방지
       // resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xfff4f3f9),
-        body: Container(
+        body: _isLoading ?
+        Center(child: CircularProgressIndicator()) :
+        Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

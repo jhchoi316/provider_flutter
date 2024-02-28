@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 
-class ProviderParentUpload with ChangeNotifier {
+class ProviderReport with ChangeNotifier {
 
   late Map<String, dynamic> jsonResponse;
 
@@ -72,11 +72,12 @@ class ProviderParentUpload with ChangeNotifier {
     this.text = text;
     this.image = image;
     this.selectedDate = selectedDate;
-    await setData();
+    setData();
   }
 
-  Future<void> setData() async {
+  void setData() async {
     jsonResponse = await writeParentUpload(pid,text,image!,selectedDate);
+    bool isDone = false;
     print("ParentResult용 데이터 받음!");
 
     correctedText = jsonResponse['correctedText'];

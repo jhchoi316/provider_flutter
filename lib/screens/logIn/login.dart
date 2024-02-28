@@ -5,8 +5,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import '../providers/provider_login.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/provider_loading.dart';
+import '../providers/provider_login.dart';
 
 // nation dropdown
 class NationDropdown extends StatefulWidget {
@@ -25,7 +27,7 @@ class NationDropdownState extends State<NationDropdown> {
   void initState() {
     super.initState();
     setState(() {
-      _selectedNation = _nation[0];
+      _selectedNation = _nation.first;
     });
   }
 
@@ -70,6 +72,7 @@ class LogIn extends StatefulWidget {
 
   @override
   State<LogIn> createState() => _LogInState();
+
 }
 
 class _LogInState extends State<LogIn> {
@@ -184,11 +187,10 @@ class _LogInState extends State<LogIn> {
       ),
       child: TextButton(
         onPressed: () async {
-          print('로그인 슈웃~');
+          context.read<ProviderLoading>().setIsLoadingTrue();
           context.read<ProviderLogIn>().setSelectedDate(DateTime.now());
-          context.read<ProviderLogIn>().setData();
-          //context.read<ProviderLogIn>(listen: false).controller.sink.add(0);
-
+          await context.read<ProviderLogIn>().setData();
+          context.read<ProviderLoading>().setIsLoadingFalse();
           context.go('/home');
         },
         child: Text(
@@ -257,14 +259,30 @@ class _LogInState extends State<LogIn> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    context.watch<ProviderLoading>();
+    bool isLoading = context.read<ProviderLoading>().getIsLoading();
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
+    return
+      Scaffold(
       backgroundColor: Color(0xff8DBFD2),
-      body: SingleChildScrollView(
+      body: isLoading ?
+      Center(child: CircularProgressIndicator()) :
+      SingleChildScrollView(
         child: Column(
           children: <Widget>[
             nationSelect(context),

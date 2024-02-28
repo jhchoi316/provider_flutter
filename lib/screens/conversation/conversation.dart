@@ -7,13 +7,15 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 import '../providers/provider_home.dart';
+import '../providers/provider_loading.dart';
 
 
 class Conversation extends StatefulWidget {
   const Conversation({super.key});
 
   @override
-  _ConversationState createState() => _ConversationState();
+  State<Conversation> createState() => _ConversationState();
+  // _ConversationState createState() => _ConversationState();
 }
 
 class _ConversationState extends State<Conversation> with TickerProviderStateMixin {
@@ -27,7 +29,6 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     diaryTabController.addListener(_onTabChanged); // 탭 변경 이벤트 추가
 
   }
-
   // 탭 변경 이벤트
   void _onTabChanged() {
     setState(() {}); // 화면을 다시 그려줌
@@ -399,7 +400,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
             onTap: () {
               _showImagePopupParent(context);
             },
-            child: Image.asset(
+            child: Image.network(
               // 여기에 parentCharacterUrl 표시
               '$parentCharacterUrl',
               width: 150,
@@ -413,7 +414,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
             onTap: () {
               _showImagePopupChild(context);
             },
-            child: Image.asset(
+            child: Image.network(
               // 여기에 childCharacterUrl 표시
               '$childCharacterUrl',
               width: 150,
@@ -430,14 +431,20 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    context.watch<ProviderLoading>();
+    bool isLoading = context.read<ProviderLoading>().getIsLoading();
     context.watch<ProviderHome>();
     print("Conversation 페이지 아빠 안잔다~");
 
     late DateTime selectedDate = context.read<ProviderHome>().getSelectedDate();
 
 
-    return Scaffold(
-        body: Column(
+    return
+    Scaffold(
+      backgroundColor: Color(0xff8DBFD2),
+        body: isLoading ?
+        Center(child: CircularProgressIndicator()) :
+        Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             AppBar(

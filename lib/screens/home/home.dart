@@ -1,3 +1,4 @@
+import 'package:Front_Flutter/screens/providers/provider_loading.dart';
 import 'package:Front_Flutter/screens/providers/provider_login.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,9 +14,11 @@ import 'package:provider/provider.dart';
 
 import '../providers/provider_home.dart';
 class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
+  const Home({super.key});
 
+  @override
+  // _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
@@ -24,6 +27,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -68,12 +72,12 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.arrow_back_ios),
             color: Colors.white,
-            onPressed: () {
-              setState(() {
+            onPressed: () async {
+                context.read<ProviderLoading>().setIsLoadingTrue();
                 _selectedDate = DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
                 context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
-                context.read<ProviderLogIn>().setData();
-              });
+                await context.read<ProviderLogIn>().setData();
+                context.read<ProviderLoading>().setIsLoadingFalse();
             },
           ),
           RichText(
@@ -89,13 +93,14 @@ class _HomeState extends State<Home> {
           IconButton(
             icon: Icon(Icons.arrow_forward_ios),
             color: Colors.white,
-            onPressed: () {
-              setState(() {
-                _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
-                context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
-                context.read<ProviderLogIn>().setData();
-              });
+            onPressed: () async {
+                context.read<ProviderLoading>().setIsLoadingTrue();
+              _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
+              context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
+              await context.read<ProviderLogIn>().setData();
+              context.read<ProviderLoading>().setIsLoadingFalse();
             },
+
           ),
         ],
       ),
@@ -165,8 +170,6 @@ class _HomeState extends State<Home> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    // List<dynamic>? completedList = context.read<ProviderLogIn>().getCompleteListData();
-    // print(completedList);
     late List<dynamic>? completeList = context.read<ProviderLogIn>().getCompleteListData();
     print("홈에서 comp $completeList");
     markedDates= {};
@@ -216,17 +219,13 @@ class _HomeState extends State<Home> {
           }
 
           return GestureDetector(
-            onTap: () {
-              // print("날짜 선택");
-              setState(() {
-                print('GestureDector GET');
-
-                _selectedDate = currentDate;
-                context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
-                context.read<ProviderLogIn>().setData();
-
-              });
+            onTap: () async {
+              context.read<ProviderLoading>().setIsLoadingFalse();
+              _selectedDate = currentDate;
+              context.read<ProviderLogIn>().setSelectedDate(_selectedDate);
+              await context.read<ProviderLogIn>().setData();
             },
+
             child: Container(
               width: width*0.08,
               //height: height*0.1,
@@ -284,12 +283,12 @@ class _HomeState extends State<Home> {
     final isDiaryWritten = markedDates[_selectedDate] ?? false;
 
     return InkWell(
-      onTap: () {
-        if(isDiaryWritten){
-          // 선택된 날짜 넘겨주기
+      onTap: () async {
+          context.read<ProviderLoading>().setIsLoadingTrue();
+        if(isDiaryWritten) {
           context.read<ProviderHome>().setSelectedDate(_selectedDate);
-          print('소통하기 슈웃~');
-          context.read<ProviderHome>().setData();
+          await context.read<ProviderHome>().setData();
+          context.read<ProviderLoading>().setIsLoadingFalse();
           context.go('/conversation');
         }
       },
@@ -466,7 +465,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget> [
                     Text(
-                      '부모의 일기',
+                      '아아의 일기',
                       style: GoogleFonts.jua(
                         color: Color(0xff3B3B3B),
                         fontSize:  height*0.023,
@@ -519,29 +518,21 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //URL: /home
-    // 프론트 -> 백: date = _selectedDate, pid = '0'
-    // 백 -> 프론트: 작성된 날짜 리스트(completeList), 부모+아이 일기 미리보기(교정본,이미지url)
-    // _selectedDate 형식 확인 필요
-
-    // final currentDate = DateFormat('yyyy년 MM월 dd일').format(DateTime.now());
-    // print('first');
-    // print(currentDate);
-    // context.read<Move>().controller.stream.listen((int index){
-    //   print(index);
-    // });
     context.watch<ProviderLogIn>();
+    context.watch<ProviderLoading>();
+    bool isLoading = context.read<ProviderLoading>().getIsLoading();
     print('아빠 안잔다~');
-
 
     final selectedDate = DateFormat('yyyy / MM / dd (E) ').format(_selectedDate); // 선택된 날짜의 정보를 포맷합니다.
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-
+    return
+    Scaffold(
       backgroundColor: Color(0xFF8DBFD2),
-      body: Column(
+      body: isLoading ?
+      Center(child: CircularProgressIndicator()) :
+      Column(
         children: [
           calendar(),
           diaryCard(),

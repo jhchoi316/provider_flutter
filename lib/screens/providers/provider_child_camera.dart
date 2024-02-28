@@ -17,7 +17,7 @@ class ProviderChildCamera with ChangeNotifier {
 
   late String correctedText;
   late String translatedText;
-  late String imageUrl;
+  late String imageUrl='';
 
   late String changedText = '';
   late List<String> correctedTextList = [];
@@ -25,13 +25,13 @@ class ProviderChildCamera with ChangeNotifier {
 
   // /home/parent
   Future<Map<String, dynamic>> writeChildCamera(String pid, File image, DateTime selectedDate) async {
-    print("WriteParentUpload 요청");
+    print("WriteChildUpload 요청");
     try {
-      var url = Uri.http('54.180.153.57:5000', '/home/child');
+      var url = Uri.parse('http://43.202.100.36:5000/home/child');
 
       var request = http.MultipartRequest('POST', url)
         ..fields['pid'] = pid // 사용자가 입력한 pid
-        ..fields['selectedDate'] = DateFormat('yyyy-MM-dd').format(selectedDate); // 사용자가 입력한 text
+        ..fields['date'] = DateFormat('yyyy-MM-dd').format(selectedDate); // 사용자가 입력한 text
 
       var multipartFile = await http.MultipartFile.fromPath(
         'image',
@@ -41,7 +41,7 @@ class ProviderChildCamera with ChangeNotifier {
       // 생성된 MultipartFile 객체를 요청에 추가
       request.files.add(multipartFile);
 
-      var response = await request.send().timeout(Duration(seconds: 1000));
+      var response = await request.send().timeout(Duration(seconds: 2000));
 
       if (response.statusCode == 200) {
         print('Data uploaded successfully');
@@ -64,25 +64,22 @@ class ProviderChildCamera with ChangeNotifier {
 
   void setSelectedDate(DateTime selectedDate) {
     this.selectedDate = selectedDate;
-    print(this.selectedDate);
   }
 
-  void setInput(String pid, File image, DateTime selectedDate) async {
+  Future<void> setInput(String pid, File image, DateTime selectedDate) async {
     this.pid = pid;
     this.image = image;
     this.selectedDate = selectedDate;
-    setData();
+    await setData();
   }
 
-  void setData() async {
+  Future<void> setData() async {
     jsonResponse = await writeChildCamera(pid,image!,selectedDate);
-    bool isDone = false;
     print("ChildResult용 데이터 받음!");
 
     correctedText = jsonResponse['correctedText'];
     imageUrl = jsonResponse['imageUrl'];
     translatedText = jsonResponse['translatedText'];
-
 
     notifyListeners();
     print("Provider_Child_Camera notifyListeners() on");
@@ -90,9 +87,9 @@ class ProviderChildCamera with ChangeNotifier {
     setChangedText(correctedText, translatedText);
 
     //값 바뀐다는 걸 알려줌
-    print(correctedText);
-    print(translatedText);
-    print(imageUrl);
+    // print(correctedText);
+    // print(translatedText);
+    // print(imageUrl);
   }
 
   void setChangedText(String correctedText, String translatedText) async {

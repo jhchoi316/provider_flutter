@@ -14,7 +14,7 @@ class ProviderHome with ChangeNotifier {
   late String parentCorrectedText;
   late String parentTranslatedText;
   late String parentImageUrl = '';
-  late String parentCharacterUrl;
+  late String parentCharacterUrl = '';
   late String parentQuestion;
 
   late List<String> parentCorrectedTextList = [];
@@ -26,7 +26,7 @@ class ProviderHome with ChangeNotifier {
   late String childCorrectedText;
   late String childTranslatedText;
   late String childImageUrl = '';
-  late String childCharacterUrl;
+  late String childCharacterUrl = '';
   late String childQuestion;
 
   late List<String> childCorrectedTextList = [];
@@ -38,8 +38,8 @@ class ProviderHome with ChangeNotifier {
 
   // home/conversation
   Future<Map<String, dynamic>> fetchConversation() async {
-    // var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(selectedDate)});
-    var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': '2024-02-24'});
+    var url = Uri.http('43.202.100.36:5000', '/home/conversation', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(selectedDate)});
+    // var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': '2024-02-24'});
     print("fetchConversation get요청들어갑니다~");
     var response = await http.get(url);
     if (response.statusCode == 200) {
@@ -58,9 +58,8 @@ class ProviderHome with ChangeNotifier {
     return selectedDate;
   }
 
-  void setData() async {
+  Future<void> setData() async {
     jsonResponse = await fetchConversation();
-    bool isDone = false;
     print("Conversation 데이터 받음!");
 
     parentDiary = jsonResponse['parent_diary'];
@@ -78,29 +77,22 @@ class ProviderHome with ChangeNotifier {
     childCharacterUrl = childDiary['characterUrl'];
     childQuestion = childDiary['question'];
 
-
-    //test용
-    // parentCorrectedText = 'parentCorrectedTextparentCorrectedText1. parentCorrectedTextparentCorrectedText2.parentCorrectedTextparentCorrectedText3.';
-    // parentTranslatedText = 'parentTranslatedTextparentTranslatedText1. parentTranslatedTextparentTranslatedText2. parentTranslatedTextparentTranslatedText3.';
-
-
     setParentChangedText(parentCorrectedText, parentTranslatedText);
     setChildChangedText(childCorrectedText, childTranslatedText);
 
-
     // //값 바뀐다는 걸 알려줌
     // print(parentText);
-    print(parentCorrectedText);
-    print(parentTranslatedText);
+    // print(parentCorrectedText);
+    // print(parentTranslatedText);
     // print(parentImageUrl);
-    // print(parentCharacterUrl);
-    // print(parentQuestion);
+    // print("ParentCharacter $parentCharacterUrl");
+    // print("ParentQuestion $parentQuestion");
     // print(childCorrectedText);
     // print(childTranslatedText);
     // print(childImageUrl);
-    // print(childCharacterUrl);
-    // print(childQuestion);
-    notifyListeners();
+    // print("ChildCharacter $childCharacterUrl");
+    // print("ChildlQuestion $childQuestion");
+    // notifyListeners();
     print("Provider_Home notifyListeners() on");
     print('setData 끝');
 
@@ -120,6 +112,9 @@ class ProviderHome with ChangeNotifier {
 
   void setParentChangedText(String parentCorrectedText, String parentTranslatedText) async {
     parentChangedText = '';
+    parentCorrectedTextList = [];
+    parentTranslatedTextList = [];
+
     parentCorrectedTextList = parentCorrectedText.split('.');
     parentTranslatedTextList = parentTranslatedText.split('.');
 
@@ -143,6 +138,7 @@ class ProviderHome with ChangeNotifier {
   }
 
   String? getParentCharacterUrl() {
+    print(parentCharacterUrl);
     return parentCharacterUrl;
   }
 
@@ -153,6 +149,8 @@ class ProviderHome with ChangeNotifier {
 
   void setChildChangedText(String childCorrectedText, String childTranslatedText) async {
     childChangedText = '';
+    childCorrectedTextList = [];
+    childTranslatedTextList = [];
     childCorrectedTextList = childCorrectedText.split('.');
     childTranslatedTextList = childTranslatedText.split('.');
 
@@ -185,6 +183,7 @@ class ProviderHome with ChangeNotifier {
   }
 
   String? getChildCharacterUrl() {
+    print(childCharacterUrl);
     return childCharacterUrl;
   }
 

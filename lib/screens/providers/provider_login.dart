@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 class ProviderLogIn with ChangeNotifier {
-  StreamController<int> controller = StreamController.broadcast();
 
   late Map<String, dynamic> jsonResponse;
   late List<dynamic> completeList = [];
@@ -21,7 +20,7 @@ class ProviderLogIn with ChangeNotifier {
 
   // /home
   Future<Map<String, dynamic>> fetchHome() async {
-     var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(_selectedDate)});
+    var url = Uri.http('43.202.100.36:5000', '/home', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(_selectedDate)});
     // var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': '2024-02-18'});
     print("fetchHome get요청들어갑니다~");
 
@@ -36,15 +35,14 @@ class ProviderLogIn with ChangeNotifier {
     }
   }
 
+
   void setSelectedDate(DateTime selectedDate) async {
     _selectedDate = selectedDate;
-    print(_selectedDate);
   }
 
-  void setData() async {
+  Future<void> setData() async {
     print("Provider Login setData()시작!");
     jsonResponse = await fetchHome();
-    bool isDone = false;
     print("Home을 위한 데이터 받음!");
     completeList = jsonResponse['completeList'];
 
@@ -72,7 +70,6 @@ class ProviderLogIn with ChangeNotifier {
   }
 
   String? getParentCorrectedText() {
-    parentCorrectedText = '선택된 날짜의 부모 일기된 날짜의 부모 된 날짜의 부모 된 날짜의 부모 된 날짜의 부모 된 날짜의 부모 ';
     return parentCorrectedText;
   }
 

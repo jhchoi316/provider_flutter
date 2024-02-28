@@ -8,6 +8,8 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import '../providers/provider_loading.dart';
+
 
 class ParentResult extends StatefulWidget {
   const ParentResult({Key? key}) : super(key: key);
@@ -17,12 +19,13 @@ class ParentResult extends StatefulWidget {
 }
 
 class _ParentResultState extends State<ParentResult> {
+  bool _isLoading = false;
 
-  late String? imageUrl = context.read<ProviderParentUpload>().getImageUrl();
 
   Widget showImage() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    late String? imageUrl = context.read<ProviderParentUpload>().getImageUrl();
 
     return Container(
       width: width,
@@ -39,7 +42,6 @@ class _ParentResultState extends State<ParentResult> {
     final height = MediaQuery.of(context).size.height;
 
     late String? changedText = context.read<ProviderParentUpload>().getChangedText();
-    late String? imageUrl = context.read<ProviderParentUpload>().getImageUrl();
     late String? text = context.read<ProviderParentUpload>().getText();
 
 
@@ -268,7 +270,7 @@ class _ParentResultState extends State<ParentResult> {
             SizedBox(width: 0),
             Text(
               'Viết nhật ký',
-              style: TextStyle(color: Colors.white, fontSize: height * 0.015,fontFamily: 'KNU_TRUTH'),
+              style: TextStyle(color: Colors.white, fontSize: height * 0.013,fontFamily: 'KNU_TRUTH'),
             ),
           ],
         ),
@@ -313,7 +315,8 @@ class _ParentResultState extends State<ParentResult> {
 
   @override
   Widget build(BuildContext context) {
-
+    context.watch<ProviderLoading>();
+    bool isLoading = context.read<ProviderLoading>().getIsLoading();
     context.watch<ProviderParentUpload>();
 
     // 화면 세로 고정
@@ -324,9 +327,10 @@ class _ParentResultState extends State<ParentResult> {
       // 키보드 overflow 방지
       // resizeToAvoidBottomInset: false,
         backgroundColor: const Color(0xfff4f3f9),
-        body: Expanded(
-          child: Container(
-            child: SingleChildScrollView(
+        body: isLoading ?
+        Center(child: CircularProgressIndicator()) :
+        Expanded(
+          child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -336,8 +340,6 @@ class _ParentResultState extends State<ParentResult> {
               ),
             ),
           ),
-
-        )
     );
   }
 }

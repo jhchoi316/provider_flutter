@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Front_Flutter/screens/providers/provider_parent_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -7,12 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/provider_child_camera.dart';
+import '../providers/provider_loading.dart';
 
 class ChildCamera extends StatefulWidget {
   const ChildCamera({Key? key}) : super(key: key);
 
   @override
-  _ChildCameraState createState() => _ChildCameraState();
+  State<ChildCamera> createState() => _ChildCameraState();
 }
 
 class _ChildCameraState extends State<ChildCamera> {
@@ -34,7 +36,7 @@ class _ChildCameraState extends State<ChildCamera> {
 
     return GestureDetector(
       onTap: () {
-        getImage(ImageSource.camera);
+        getImage(ImageSource.gallery);
       },
       child: Container(
         color: const Color(0xFF8DBFD2),
@@ -182,14 +184,16 @@ class _ChildCameraState extends State<ChildCamera> {
       ),
       child: TextButton(
         onPressed: () async {
-          if (_image != null) { // 작성한 text가 null인지 아닌지 확인) {
-            // if (_image != null) { // 작성한 text가 null인지 아닌지 확인) {
+          if (_image != null) {
+            context.read<ProviderLoading>().setIsLoadingTrue();
             String pid = "0";
-            // File image = _image; // 사용자가 선택한 이미지 파일
+            File image = File(_image!.path); // 사용자가 선택한 이미지 파일
 
-            context.read<ProviderChildCamera>().setInput(pid, _image!, DateTime.now());
+            await context.read<ProviderChildCamera>().setInput(pid, _image!, DateTime.now());
+            context.read<ProviderLoading>().setIsLoadingFalse();
+            context.go('/childResult');
           }
-          context.go('/childResult');
+
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -211,21 +215,19 @@ class _ChildCameraState extends State<ChildCamera> {
 
   @override
   Widget build(BuildContext context) {
-
-    // 여기에 이미지 받아와서 담아둘 변수 설정
-    // 현재는 아무 파일 받아옴 <- assets/example0.png
-    //통신 URL: /home/conversation
-    //통신: pid(variable.dart 내), date
+    context.watch<ProviderParentUpload>();
+    context.watch<ProviderLoading>();
+    bool isLoading = context.read<ProviderLoading>().getIsLoading();
 
     // 화면 세로 고정
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return Scaffold(
-      // 키보드 overflow 방지
-      // resizeToAvoidBottomInset: false,
-        backgroundColor: const Color(0xfff4f3f9),
-        body: SingleChildScrollView(
+        backgroundColor: const Color(0xff8DBFD2),
+        body: isLoading ?
+        Center(child: CircularProgressIndicator()) :
+        SingleChildScrollView(
             child:
             Column(
               mainAxisAlignment: MainAxisAlignment.start,

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:Front_Flutter/screens/providers/provider_child_camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -6,24 +7,22 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import 'dart:async';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/provider_home.dart';
+import '../providers/provider_loading.dart';
 import '../providers/provider_parent_upload.dart';
 
 class ParentUpload extends StatefulWidget {
   const ParentUpload({Key? key}) : super(key: key);
 
   @override
-  _ParentUploadState createState() => _ParentUploadState();
+  State<ParentUpload> createState() => _ParentUploadState();
 }
 
 class _ParentUploadState extends State<ParentUpload> {
   File? _image;
   final picker = ImagePicker();
-
 
   @override
   void initState() {
@@ -166,17 +165,20 @@ class _ParentUploadState extends State<ParentUpload> {
       ),
       child: TextButton(
         onPressed: () async {
-          if (_image != null && _textController.text != '') { // 작성한 text가 null인지 아닌지 확인) {
-          // if (_image != null) { // 작성한 text가 null인지 아닌지 확인) {
+          if (_image != null && _textController.text != '') {
+            context.read<ProviderLoading>().setIsLoadingTrue();
+            print("setIsLoadingTrue");
+            // if (_image != null) { // 작성한 text가 null인지 아닌지 확인) {
             String pid = "0";
             //   String text = _textController.text;
-            String text = "$_textController.text";
+            String text = _textController.text;
             File image = File(_image!.path); // 사용자가 선택한 이미지 파일
 
-            print(image);
-           context.read<ProviderParentUpload>().setInput(pid, text, image!, DateTime.now());
+            await context.read<ProviderParentUpload>().setInput(pid, text, image!, DateTime.now());
+            context.read<ProviderLoading>().setIsLoadingFalse();
+            context.go('/parentResult');
           }
-          context.go('/ParentResult');
+
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -206,15 +208,22 @@ class _ParentUploadState extends State<ParentUpload> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<ProviderParentUpload>();
+    context.watch<ProviderLoading>();
+    bool isLoading = context.read<ProviderLoading>().getIsLoading();
+    context.watch<ProviderHome>();
+
+    print("isLoading Parent Upload $isLoading");
+
     // 화면 세로 고정
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return Scaffold(
-      // 키보드 overflow 방지
-      // resizeToAvoidBottomInset: false,
-        backgroundColor: const Color(0xfff4f3f9),
-        body: SingleChildScrollView(
+        backgroundColor: const Color(0xff8DBFD2),
+        body: isLoading ?
+        Center(child: CircularProgressIndicator()) :
+        SingleChildScrollView(
             child:
             Column(
               mainAxisAlignment: MainAxisAlignment.start,

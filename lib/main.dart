@@ -11,8 +11,10 @@ import 'screens/home/home.dart';
 import 'screens/logIn/login.dart';
 import 'screens/providers/provider_child_camera.dart';
 import 'screens/providers/provider_home.dart';
+import 'screens/providers/provider_loading.dart';
 import 'screens/providers/provider_login.dart';
 import 'screens/providers/provider_parent_upload.dart';
+import 'screens/providers/provider_report.dart';
 import 'screens/report/report.dart';
 import 'screens/settings/setting.dart';
 import 'screens/widgets/scaffold_with_nav_bar.dart';
@@ -25,8 +27,9 @@ void main() {
         ChangeNotifierProvider(create: (_) => ProviderHome()),
         ChangeNotifierProvider(create: (_) => ProviderParentUpload()),
         ChangeNotifierProvider(create: (_) => ProviderChildCamera()),
+        ChangeNotifierProvider(create: (_) => ProviderReport()),
+        ChangeNotifierProvider(create: (_) => ProviderLoading()),
 
-        // ChangeNotifierProvider(create: (_) => ProviderReport()),
         // ChangeNotifierProvider(create: (_) => ProviderSettings()),
 
       ],
