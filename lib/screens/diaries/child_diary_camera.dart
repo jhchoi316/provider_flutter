@@ -36,7 +36,7 @@ class _ChildCameraState extends State<ChildCamera> {
 
     return GestureDetector(
       onTap: () {
-        getImage(ImageSource.gallery);
+        getImage(ImageSource.camera);
       },
       child: Container(
         color: const Color(0xFF8DBFD2),

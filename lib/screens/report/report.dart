@@ -176,14 +176,14 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                           sections: [
                                             PieChartSectionData(
                                               //통신(variable.dart) : day1_lang
-                                              value: 0.5,
+                                              value: 0.63,
                                               radius: MediaQuery.of(context).size.width *0.05,
                                               color: Colors.blue,
                                               showTitle: false,
                                             ),
                                             PieChartSectionData(
                                               //통신(variable.dart) : day1_lang
-                                              value: 1-0.5,
+                                              value: 1-0.63,
                                               radius: MediaQuery.of(context).size.width *0.1,
                                               color: Colors.transparent,
                                               showTitle: false,
@@ -210,7 +210,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                     )
                                 ),
                                 //추후 비율 변수 값 대입(일별 한국어 사용 비울)
-                                Text('50%',
+                                Text('63%',
                                   style: TextStyle(
                                     color: Colors.blue,
                                     fontSize:20,
@@ -233,14 +233,14 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                           sections: [
                                             PieChartSectionData(
                                               //통신(variable.dart) : day1_correct
-                                              value: 0.75,
+                                              value: 0.76,
                                               radius: MediaQuery.of(context).size.width *0.05,
                                               color: Colors.grey,
                                               showTitle: false,
                                             ),
                                             PieChartSectionData(
                                               //통신(variable.dart) : day1_correct
-                                              value: 1-0.75,
+                                              value: 1-0.76,
                                               radius: MediaQuery.of(context).size.width *0.1,
                                               color: Colors.transparent,
                                               showTitle: false,
@@ -251,7 +251,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                       ),
                                     ),
                                     Image.asset(
-                                      'assets/dasol.png',
+                                      'assets/sad.png',
                                       width: MediaQuery.of(context).size.width * 0.25,
                                       height: MediaQuery.of(context).size.width * 0.25,
                                     ),
@@ -267,7 +267,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                     )
                                 ),
                                 //추후 비율 변수 값 대입(일별 한국어 사용 비울)
-                                Text('75%',
+                                Text('76%',
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize:20,
@@ -751,14 +751,14 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                           sections: [
                                             PieChartSectionData(
                                               //통신(variable.dart) : day1_mood
-                                              value: 0.5,
+                                              value: 0.83,
                                               radius: MediaQuery.of(context).size.width *0.05,
                                               color: Colors.blue,
                                               showTitle: false,
                                             ),
                                             PieChartSectionData(
                                               //통신(variable.dart) : day1_mood
-                                              value: 1-0.5,
+                                              value: 1-0.83,
                                               radius: MediaQuery.of(context).size.width *0.1,
                                               color: Colors.transparent,
                                               showTitle: false,
@@ -769,7 +769,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                       ),
                                     ),
                                     Image.asset(
-                                      'assets/dasol.png',
+                                      'assets/happy.png',
                                       width: MediaQuery.of(context).size.width * 0.25,
                                       height: MediaQuery.of(context).size.width * 0.25,
                                     ),
@@ -783,8 +783,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                     fontSize:15,
                                   ),
                                 ),
-                                //추후 비율 변수 값 대입(일별 한국어 사용 비울)
-                                Text('50%',
+                                Text('83%',
                                   style:GoogleFonts.jua(
                                     color: Colors.blue,
                                     fontSize:20,
@@ -806,14 +805,14 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                           sections: [
                                             PieChartSectionData(
                                               //통신(variable.dart) : day1_correct
-                                              value: 0.75,
+                                              value: 0.52,
                                               radius: MediaQuery.of(context).size.width *0.05,
                                               color: Colors.grey,
                                               showTitle: false,
                                             ),
                                             PieChartSectionData(
                                               //통신(variable.dart) : 1 - day1_correct
-                                              value: 1-0.75,
+                                              value: 1-0.52,
                                               radius: MediaQuery.of(context).size.width *0.1,
                                               color: Colors.transparent,
                                               showTitle: false,
@@ -839,7 +838,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 //통신(서버->클) 비율 변수 값 대입(일별 한국어 사용 비울)
-                                Text('75%',
+                                Text('52%',
                                   style:GoogleFonts.jua(
                                     color: Colors.grey,
                                     fontSize:20,
@@ -897,7 +896,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                               Column(
                                 children: [
                                   Image.asset(
-                                    'assets/dasol.png',
+                                    'assets/happy.png',
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.width * 0.1,
                                   ),
@@ -913,7 +912,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                               Column(
                                 children: [
                                   Image.asset(
-                                    'assets/dasol.png',
+                                    'assets/sad.png',
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.width * 0.1,
                                   ),
@@ -955,7 +954,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                               Column(
                                 children: [
                                   Image.asset(
-                                    'assets/dasol.png',
+                                    'assets/happy.png',
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.width * 0.1,
                                   ),
@@ -971,7 +970,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                               Column(
                                 children: [
                                   Image.asset(
-                                    'assets/dasol.png',
+                                    'assets/sad.png',
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.width * 0.1,
                                   ),
@@ -987,7 +986,7 @@ class _ReportState extends State<Report> with TickerProviderStateMixin {
                               Column(
                                 children: [
                                   Image.asset(
-                                    'assets/dasol.png',
+                                    'assets/happy.png',
                                     width: MediaQuery.of(context).size.width * 0.1,
                                     height: MediaQuery.of(context).size.width * 0.1,
                                   ),

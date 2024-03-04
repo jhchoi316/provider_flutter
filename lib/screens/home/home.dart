@@ -465,7 +465,7 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget> [
                     Text(
-                      '아아의 일기',
+                      '아이의 일기',
                       style: GoogleFonts.jua(
                         color: Color(0xff3B3B3B),
                         fontSize:  height*0.023,
