@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../providers/provider_loading.dart';
@@ -19,9 +17,8 @@ class ParentResult extends StatefulWidget {
 }
 
 class _ParentResultState extends State<ParentResult> {
-  bool _isLoading = false;
 
-
+  //이미지를 보여주는 위젯
   Widget showImage() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -37,17 +34,18 @@ class _ParentResultState extends State<ParentResult> {
     );
   }
 
+  // 일기 보여주는 위제
   Widget showDiary() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    //ProviderParentUpload로부터 변경된 일기, 원본 일기 get하기
     late String? changedText = context.read<ProviderParentUpload>().getChangedText();
     late String? text = context.read<ProviderParentUpload>().getText();
 
 
     return Container(
       width: width,
-      // color: const Color(0xFF8DBFD2),
       child: Column(
         children: [
           Container(
@@ -173,7 +171,7 @@ class _ParentResultState extends State<ParentResult> {
                     ),
 
                     SizedBox(height: height * 0.01),
-                    // 변경된 일기 보여주는 Container 부분
+                    // 원본 일기 보여주는 Container 부분
                     Row(
                         children: [
                           SizedBox(width: width * 0.05),
@@ -227,8 +225,8 @@ class _ParentResultState extends State<ParentResult> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         SizedBox(width: width * 0.02),
-                        goToHome(),
-                        writeDone(),
+                        goToHome(), // 홈으로 가기 버튼 위젯
+                        writeDone(), // 아이일기 작성 페이지로 가기 버튼 위젯
                         SizedBox(width: width * 0.02),
                       ],
                     ),
@@ -244,6 +242,7 @@ class _ParentResultState extends State<ParentResult> {
     );
   }
 
+  // 아이일기 작성 페이지로 가기 버튼 위젯
   Widget writeDone() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -278,6 +277,7 @@ class _ParentResultState extends State<ParentResult> {
     );
   }
 
+  // 홈으로 가기 버튼 위젯
   Widget goToHome() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

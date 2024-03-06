@@ -61,6 +61,7 @@ class _ChildCameraState extends State<ChildCamera> {
     );
   }
 
+  // 촬영 가이드 & 작성완료버튼 위젯
   Widget cameraGuide() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -130,6 +131,7 @@ class _ChildCameraState extends State<ChildCamera> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(width: width * 0.08),
+              //코드수정필요!!!!!!!! 3번 가이드 직접 보면서 수정하기
               RichText(
                 textAlign: TextAlign.start,
                 text: TextSpan(
@@ -171,6 +173,7 @@ class _ChildCameraState extends State<ChildCamera> {
     );
   }
 
+  // 작성완료버튼 위젯
   Widget writeDone() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -184,11 +187,13 @@ class _ChildCameraState extends State<ChildCamera> {
       ),
       child: TextButton(
         onPressed: () async {
+
           if (_image != null) {
             context.read<ProviderLoading>().setIsLoadingTrue();
             String pid = "0";
             File image = File(_image!.path); // 사용자가 선택한 이미지 파일
 
+            // ProviderChildCamera 로 POST 해야할 data 보내기
             await context.read<ProviderChildCamera>().setInput(pid, _image!, DateTime.now());
             context.read<ProviderLoading>().setIsLoadingFalse();
             context.go('/childResult');
@@ -232,8 +237,8 @@ class _ChildCameraState extends State<ChildCamera> {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                showImage(),
-                cameraGuide(),
+                showImage(), //이미지를 보여주는 위젯
+                cameraGuide(), // 촬영 가이드 & 작성완료버튼 위젯
               ],
             )
         )
