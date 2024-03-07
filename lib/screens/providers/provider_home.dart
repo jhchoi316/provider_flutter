@@ -39,8 +39,7 @@ class ProviderHome with ChangeNotifier {
   // home/conversation
   Future<Map<String, dynamic>> fetchConversation() async {
     var url = Uri.http('43.202.100.36:5000', '/home/conversation', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(selectedDate)});
-    // var url = Uri.http('54.180.153.57:5000', '/home/conversation', {'pid': '0', 'date': '2024-02-24'});
-    print("fetchConversation get요청들어갑니다~");
+    // print("!!fetchConversation get!!");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -49,18 +48,19 @@ class ProviderHome with ChangeNotifier {
     }
   }
 
+  // 요청에 필요한 날짜 정보 받아오기
   void setSelectedDate(DateTime selectedDate) {
     this.selectedDate = selectedDate;
-    print(this.selectedDate);
   }
 
   DateTime getSelectedDate() {
     return selectedDate;
   }
 
+  // Conversation 요청의 결과를 사용하기 위한 데이터로 바꿔주는 과정
   Future<void> setData() async {
     jsonResponse = await fetchConversation();
-    print("Conversation 데이터 받음!");
+    // print("Conversation 데이터 받음!");
 
     parentDiary = jsonResponse['parent_diary'];
     parentText = parentDiary['text'];
@@ -81,7 +81,7 @@ class ProviderHome with ChangeNotifier {
     setParentChangedText(parentCorrectedText, parentTranslatedText);
     setChildChangedText(childCorrectedText, childTranslatedText);
 
-    // //값 바뀐다는 걸 알려줌
+    // // 확인용 print문
     // print(parentText);
     // print(parentCorrectedText);
     // print(parentTranslatedText);
@@ -94,9 +94,11 @@ class ProviderHome with ChangeNotifier {
     // print("ChildCharacter $childCharacterUrl");
     // print("ChildlQuestion $childQuestion");
 
+    // data 다 받았다고 알려주기
     notifyListeners();
-    print("Provider_Home notifyListeners() on");
-    print('setData 끝');
+
+    // print("Provider_Home notifyListeners() on");
+    // print('setData 끝');
 
   }
 
@@ -128,8 +130,9 @@ class ProviderHome with ChangeNotifier {
       parentChangedText += parentTranslatedTextList[i];
       parentChangedText += "\n";
     }
-    print(parentChangedText);
-    print('setParentChangedText 전처리 끝');
+
+    // print(parentChangedText);
+    // print('setParentChangedText 전처리 끝');
   }
 
   String? getParentChangedText() {
@@ -137,12 +140,10 @@ class ProviderHome with ChangeNotifier {
   }
 
   String? getParentImageUrl() {
-    // parentImageUrl = 'https://i.pinimg.com/736x/90/84/5c/90845c0ec45eba7c8c75d2b08a74a18f.jpg';
     return parentImageUrl;
   }
 
   String? getParentCharacterUrl() {
-    print(parentCharacterUrl);
     return parentCharacterUrl;
   }
 
@@ -150,7 +151,7 @@ class ProviderHome with ChangeNotifier {
     return parentQuestion;
   }
 
-
+  // 변경된 일기 보여주기 위한 교정본과 번역본 교차 출력 전처리
   void setChildChangedText(String childCorrectedText, String childTranslatedText) async {
     childChangedText = '';
     childCorrectedTextList = [];
@@ -164,15 +165,13 @@ class ProviderHome with ChangeNotifier {
       childChangedText += childTranslatedTextList[i];
       childChangedText += "\n";
     }
-    print(childChangedText);
-    print('setChildChangedText 전처리 끝');
-
+    // print(childChangedText);
+    // print('setChildChangedText 전처리 끝');
   }
 
   String? getChildChangedText() {
     return childChangedText;
   }
-
 
   String? getChildCorrectedText() {
     return childCorrectedText;
@@ -187,7 +186,6 @@ class ProviderHome with ChangeNotifier {
   }
 
   String? getChildCharacterUrl() {
-    print(childCharacterUrl);
     return childCharacterUrl;
   }
 

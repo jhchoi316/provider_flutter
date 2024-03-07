@@ -29,7 +29,6 @@ void main() {
         ChangeNotifierProvider(create: (_) => ProviderChildCamera()),
         ChangeNotifierProvider(create: (_) => ProviderReport()),
         ChangeNotifierProvider(create: (_) => ProviderLoading()),
-
         // ChangeNotifierProvider(create: (_) => ProviderSettings()),
 
       ],

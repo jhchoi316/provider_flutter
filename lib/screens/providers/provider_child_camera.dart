@@ -23,9 +23,9 @@ class ProviderChildCamera with ChangeNotifier {
   late List<String> correctedTextList = [];
   late List<String> translatedTextList = [];
 
-  // /home/parent
+  // /home/child
   Future<Map<String, dynamic>> writeChildCamera(String pid, File image, DateTime selectedDate) async {
-    print("WriteChildUpload 요청");
+    // print("WriteChildUpload 요청");
     try {
       var url = Uri.parse('http://43.202.100.36:5000/home/child');
 
@@ -47,7 +47,7 @@ class ProviderChildCamera with ChangeNotifier {
       var response = await request.send().timeout(Duration(seconds: 2000));
 
       if (response.statusCode == 200) {
-        print('Data uploaded successfully');
+        // print('Data uploaded successfully');
 
         //요청이 성공적으로 처리되면, 서버에서 반환된 데이터를 읽어온다.
         var responseData = await response.stream.toBytes();
@@ -72,6 +72,7 @@ class ProviderChildCamera with ChangeNotifier {
   }
 
   // ChildCamera 에서 작성완료 버튼 클릭 시 호출됨
+  // 실질적으로 호출될 때 받을 인자값들을 Provider를 통해 공유하기 위함
   Future<void> setInput(String pid, File image, DateTime selectedDate) async {
     this.pid = pid;
     this.image = image;
@@ -81,7 +82,7 @@ class ProviderChildCamera with ChangeNotifier {
 
   Future<void> setData() async {
     jsonResponse = await writeChildCamera(pid,image!,selectedDate);
-    print("ChildResult용 데이터 받음!");
+    // print("ChildResult용 데이터 받음!");
 
     // jsonResponse에 있는 data를 각각 변수에 넣기
     correctedText = jsonResponse['correctedText'];
@@ -89,7 +90,7 @@ class ProviderChildCamera with ChangeNotifier {
     translatedText = jsonResponse['translatedText'];
 
     notifyListeners();
-    print("Provider_Child_Camera notifyListeners() on");
+    // print("Provider_Child_Camera notifyListeners() on");
 
     // 변경된 일기 보여주기 위한 교정본과 번역본 교차 출력 전처리
     setChangedText(correctedText, translatedText);
@@ -112,8 +113,8 @@ class ProviderChildCamera with ChangeNotifier {
       changedText += translatedTextList[i];
       changedText += "\n";
     }
-    print(changedText);
-    print('changedText 전처리 끝');
+    // print(changedText);
+    // print('changedText 전처리 끝');
   }
 
   String? getChangedText() {

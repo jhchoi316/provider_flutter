@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/provider_loading.dart';
 import '../providers/provider_login.dart';
 
@@ -207,7 +202,7 @@ class _LogInState extends State<LogIn> {
           await context.read<ProviderLogIn>().setData();
           //isLoading을 false로
           context.read<ProviderLoading>().setIsLoadingFalse();
-          //home으로 고!!
+          //home으로 화면 이동
           context.go('/home');
         },
         child: Text(
@@ -222,7 +217,8 @@ class _LogInState extends State<LogIn> {
     );
   }
 
-  //아이디찾기, 비밀번호찾기, 회원가입 텍스트,,,ㅎ
+  //아이디찾기, 비밀번호찾기, 회원가입 텍스트
+  // 추후 기능 보충 필요
   Widget sign(BuildContext context){
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -278,13 +274,11 @@ class _LogInState extends State<LogIn> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -325,10 +319,7 @@ class _LogInState extends State<LogIn> {
               SizedBox(height: height * 0.02),
               loginButton(context),
               sign(context),
-
-
               SizedBox(height: height * 0.01),
-
             ],
           ),
         ),

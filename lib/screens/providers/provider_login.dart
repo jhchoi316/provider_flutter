@@ -20,21 +20,19 @@ class ProviderLogIn with ChangeNotifier {
   late DateTime _selectedDate;
 
   // /home
-  // 백 통신 위한 fetchHome 호출, reponse로 받음
   Future<Map<String, dynamic>> fetchHome() async {
     var url = Uri.http('43.202.100.36:5000', '/home', {'pid': '0', 'date': DateFormat('yyyy-MM-dd').format(_selectedDate)});
-    // var url = Uri.http('54.180.153.57:5000', '/home', {'pid': '0', 'date': '2024-02-18'});
-    print("fetchHome get요청들어갑니다~");
+    // print("!!fetchHome get!!");
 
     var response = await http.get(url);
-    print(response.statusCode);
+    // print(response.statusCode);
 
     //json data를 decode해서 return
     if (response.statusCode == 200) {
       return convert.jsonDecode(response.body) as Map<String, dynamic>;
     }
     else {
-      throw Exception('FetchHome 에러다 ㅅㅂ~~~');
+      throw Exception('!!FetchHome 에러!!');
     }
   }
 
@@ -49,7 +47,7 @@ class ProviderLogIn with ChangeNotifier {
     print("Provider Login setData()시작!");
     // 백 통신 위한 fetchHome 호출
     jsonResponse = await fetchHome();
-    print("Home을 위한 데이터 받음!");
+    // print("Home을 위한 데이터 받음!");
 
     // jsonResponse에 있는 data를 각각 변수에 넣기
     completeList = jsonResponse['completeList'];
@@ -64,14 +62,14 @@ class ProviderLogIn with ChangeNotifier {
 
     // data 다 받았다고 알려주기
     notifyListeners();
-    print("Provider_LogIn notifyListers() on");
+    // print("Provider_LogIn notifyListers() on");
 
-    //값 바뀐다는 걸 알려줌
-    print(completeList);
-    print(parentCorrectedText);
-    print(parentImageUrl);
-    print(childCorrectedText);
-    print(childImageUrl);
+    // // 확인용 print문
+    // print(completeList);
+    // print(parentCorrectedText);
+    // print(parentImageUrl);
+    // print(childCorrectedText);
+    // print(childImageUrl);
   }
 
 
@@ -85,17 +83,14 @@ class ProviderLogIn with ChangeNotifier {
   }
 
   String? getParentImageUrl() {
-    //parentImageUrl = 'https://i.pinimg.com/736x/90/84/5c/90845c0ec45eba7c8c75d2b08a74a18f.jpg';
     return parentImageUrl;
   }
 
   String? getChildCorrectedText() {
-    //childCorrectedText = '선택된 날짜의 아이 일기';
     return childCorrectedText;
   }
 
   String? getChildImageUrl() {
-    //childImageUrl = 'https://static.wixstatic.com/media/c8c1a9_94efe5e4d4c14411bf6221e7538e453a~mv2.png/v1/fill/w_560,h_606,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/favpng_shinnosuke-nohara-video-crayon-shin-chan-nene-sakurada-television-show.png';
     return childImageUrl;
   }
 

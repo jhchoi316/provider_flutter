@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
   // State 객체 정리 작업 수행
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -183,7 +182,7 @@ class _HomeState extends State<Home> {
     // 추후 코드 수정 필요!!!!!!!!!!
     // ProviderLogIn에서 getCompleteListData() 호출해서 completeList 받기
     late List<dynamic>? completeList = context.read<ProviderLogIn>().getCompleteListData();
-    print("홈에서 comp $completeList");
+    // print("홈에서 comp $completeList");
 
     markedDates= {};
     //completeList가 null이 아닐 때 각 문자열을 DateTime으로 변환하고
@@ -191,7 +190,7 @@ class _HomeState extends State<Home> {
       DateTime date = DateFormat('E, dd MMM yyyy HH:mm:ss').parse(dateString);
       markedDates[date] = true; // 해당하는 날짜의 markedDates를 true로 설정
     });
-    print("calendarDays에서 mark $markedDates");
+    // print("calendarDays에서 mark $markedDates");
 
 
     return Container(
@@ -553,7 +552,6 @@ class _HomeState extends State<Home> {
     context.watch<ProviderLogIn>();
     context.watch<ProviderLoading>();
     bool isLoading = context.read<ProviderLoading>().getIsLoading();
-    print('아빠 안잔다~');
 
     return
     Scaffold(

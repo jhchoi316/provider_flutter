@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:math';
-import 'package:fl_chart/fl_chart.dart' ;
 
 class Settings extends StatelessWidget {
   const Settings({super.key});

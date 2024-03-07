@@ -1,12 +1,6 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:intl/intl.dart';
 
+// 로딩 페이지를 위한 변수 설정 및 반환하는 Provider
 class ProviderLoading with ChangeNotifier {
 
   bool isLoading = false;

@@ -225,7 +225,7 @@ class _ParentUploadState extends State<ParentUpload> {
     bool isLoading = context.read<ProviderLoading>().getIsLoading();
     context.watch<ProviderHome>();
 
-    print("isLoading Parent Upload $isLoading");
+    // print("isLoading Parent Upload $isLoading");
 
     // 화면 세로 고정
     SystemChrome.setPreferredOrientations(

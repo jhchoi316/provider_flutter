@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/provider_home.dart';
-import '../providers/provider_login.dart';
 
 // BottomNavigationBar : navigationShell로 컨트롤
 class ScaffoldWithNavBar extends StatelessWidget {
@@ -42,6 +41,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
               onPressed: () {
                 navigationShell.goBranch(1);
                 // 오늘 날짜 띄우기
+                // 2번째 Tab인 Conversation을 클릭하면, 오늘 날짜로 서버에 데이터 요청
                 context.read<ProviderHome>().setSelectedDate(DateTime.now());
                 context.read<ProviderHome>().setData();
               },

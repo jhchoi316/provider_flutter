@@ -24,7 +24,8 @@ class ProviderReport with ChangeNotifier {
   late List<String> correctedTextList = [];
   late List<String> translatedTextList = [];
 
-  // /home/parent
+  // /report
+  // 추후 수정 필요
   Future<Map<String, dynamic>> writeParentUpload(String pid, String text, File image, DateTime selectedDate) async {
     print("WriteParentUpload 요청");
     try {
@@ -33,7 +34,7 @@ class ProviderReport with ChangeNotifier {
       var request = http.MultipartRequest('POST', url);
       request.fields['pid'] = pid; // 사용자가 입력한 pid
       request.fields['text'] = text; // 사용자가 입력한 text
-      request.fields['date'] = DateFormat('yyyy-MM-dd').format(selectedDate); // 사용자가 입력한 text
+      request.fields['date'] = DateFormat('yyyy-MM-dd').format(selectedDate);
 
       var multipartFile = await http.MultipartFile.fromPath(
         'image',
