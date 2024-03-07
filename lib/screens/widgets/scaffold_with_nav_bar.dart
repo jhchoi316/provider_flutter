@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../providers/provider_home.dart';
 import '../providers/provider_login.dart';
 
+// BottomNavigationBar : navigationShell로 컨트롤
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({
     required this.navigationShell,
@@ -21,10 +22,11 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
     return Scaffold(
 
+      // navigationShell 이용해서 BottomAppBar의 각 아이콘 클릭 시 main에 설정된 StatefulShellBranch에 연결됨
       body: navigationShell,
       bottomNavigationBar: BottomAppBar(
         color: Color(0xFF8DBFD2),
-        shape: CircularNotchedRectangle(),
+        shape: CircularNotchedRectangle(), // 다소리 버튼 위치시키기 위한 notch 설정
         notchMargin: 5,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -59,11 +61,13 @@ class ScaffoldWithNavBar extends StatelessWidget {
           ],
         ),
       ),
+      // 중앙에 다소리 floatingActionButton 설정
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Builder(
         builder: (BuildContext context) {
           return FloatingActionButton(
             onPressed: () {
+              // 클릭되면 투명한 showModalBottomSheet이 올라와서 일기 작성하기 버튼 보여줌
               showModalBottomSheet(
                 backgroundColor: Colors.transparent,
                 context: context,
@@ -94,6 +98,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
+                                // 버튼 누르면 parentUpload로 고!
                                 context.go("/parentUpload");
                               },
                             ),
@@ -115,6 +120,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
           );
         },
       ),
+      // 다소리 버튼 뒷부분에 페이지 배경 보이도록 설정
       extendBody: true,
 
     );

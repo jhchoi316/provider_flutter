@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-//통신 import
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-
 import '../providers/provider_home.dart';
 import '../providers/provider_loading.dart';
 
@@ -27,14 +23,14 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     super.initState();
     diaryTabController = TabController(length: 2, vsync: this);
     diaryTabController.addListener(_onTabChanged); // 탭 변경 이벤트 추가
-
   }
   // 탭 변경 이벤트
   void _onTabChanged() {
     setState(() {}); // 화면을 다시 그려줌
   }
 
-  Widget conversationTabBar() {
+  // 부모 아이 TabBar
+  Widget conversationTabBar()  {
     return Container(
       color: Colors.white,
       child: TabBar(
@@ -72,6 +68,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     );
   }
 
+  // 부모 아이 TabBarView
   Widget conversationTabView() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -101,6 +98,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    // ProviderHome으로부터 부모 data get
     late String? parentText = context.read<ProviderHome>().getParentText();
     late String? parentChangedText = context.read<ProviderHome>().getParentChangedText();
     late String? parentImageUrl = context.read<ProviderHome>().getParentImageUrl();
@@ -110,8 +108,8 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          //사진
-          // SizedBox(height: height * 0.02,),
+
+          // 사진 보여주는 부분
           Container(
             margin: EdgeInsets.symmetric(horizontal: height * 0.02),
             // 사진 크기 조절
@@ -120,7 +118,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.network(
-                // 여기에 parentImageUrl 표시
+                // parentImageUrl 표시
                 '$parentImageUrl',
                 fit: BoxFit.cover,
               ),
@@ -282,6 +280,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    // ProviderHome으로부터 아이 data get
     late String? childChangedText = context.read<ProviderHome>().getChildChangedText();
     late String? childImageUrl = context.read<ProviderHome>().getChildImageUrl();
 
@@ -289,8 +288,8 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          //사진
           SizedBox(height: height * 0.02,),
+          // 아이 사진 보여주는 부분
           Container(
             margin: EdgeInsets.symmetric(horizontal: height * 0.02),
             // 사진 크기 조절
@@ -386,6 +385,8 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
   }
 
   Widget conversationCharacter() {
+    // 코드 수정 필요!!!!!!!!!!
+    // 캐릭터 사이즈 150*250으로 고정 되어 있음..
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -398,7 +399,8 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
         children: [
           InkWell(
             onTap: () {
-              _showImagePopupParent(context);
+              // Tap 하면 질문보여주기
+              _showQuestionPopupParent(context);
             },
             child: Image.network(
               // 여기에 parentCharacterUrl 표시
@@ -412,7 +414,8 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
 
           InkWell(
             onTap: () {
-              _showImagePopupChild(context);
+              // Tap 하면 질문보여주기
+              _showQuestionPopupChild(context);
             },
             child: Image.network(
               // 여기에 childCharacterUrl 표시
@@ -447,6 +450,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            // 일기장 appbar
             AppBar(
               scrolledUnderElevation: 0,
               toolbarHeight: MediaQuery.of(context).size.height * 0.1,
@@ -469,6 +473,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
             //부모 일기 아이 일기 탭
             conversationTabBar(),
 
+            // 아래로 쭉 확장되서 나오도록 Expanded 설정
             Expanded(
 
               child: Container(
@@ -476,7 +481,6 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-
                       SizedBox(height: height * 0.01,),
                       //오늘 날짜
                       Text(
@@ -491,7 +495,7 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
                       //일기 보여줄 부분
                       conversationTabView(),
 
-                      // 생성된 캐릭터
+                      // 생성된 캐릭터 보여줄 부분
                      conversationCharacter(),
                       SizedBox(height: MediaQuery.of(context).size.height * 0.1,),
                     ],
@@ -505,11 +509,13 @@ class _ConversationState extends State<Conversation> with TickerProviderStateMix
   }
 }
 
-void _showImagePopupParent(BuildContext context) {
+// 부모 캐릭터 질문 팝업 함수
+void _showQuestionPopupParent(BuildContext context) {
   late String? parentQuestion = context.read<ProviderHome>().getParentQuestion();
   showDialog(
     context: context,
     builder: (BuildContext context) {
+      // 코드 수정 필요 !!!!!!!!!!!!
       //수정: 캐릭터 위치에 맞춰서 말풍선 위치 설정되도록 변경해보기
       return AlertDialog(
         backgroundColor: Colors.transparent,
@@ -534,11 +540,14 @@ void _showImagePopupParent(BuildContext context) {
   );
 }
 
-void _showImagePopupChild(BuildContext context) {
+// 아이 캐릭터 질문 팝업 함수
+void _showQuestionPopupChild(BuildContext context) {
   late String? childQuestion = context.read<ProviderHome>().getChildQuestion();
   showDialog(
     context: context,
     builder: (BuildContext context) {
+      // 코드 수정 필요 !!!!!!!!!!!!
+      //수정: 캐릭터 위치에 맞춰서 말풍선 위치 설정되도록 변경해보기
       return AlertDialog(
         backgroundColor: Colors.transparent,
         content: Stack(

@@ -33,6 +33,7 @@ void main() {
         // ChangeNotifierProvider(create: (_) => ProviderSettings()),
 
       ],
+      // MyApp()을 child로 해서 위의 provider들이 앱 전체에서 사용되도록 함
       child: MyApp(),
     ),
   );
@@ -41,17 +42,19 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    //앱의 페이지 관리를 위한 router 등록
     return MaterialApp.router(
       title: 'Go Router',
       routerConfig: _router,
     );
   }
 
+  // 각 페이지로 이동할 수 있는 GoRoute
   final GoRouter _router = GoRouter(
-    // 처음에 띄워지는 화면 -> 현재는 LogIn 테스트중
+    // 처음에 띄워지는 화면 -> 현재는 LogIn
     initialLocation: "/logIn",
     routes: [
       GoRoute(
@@ -59,6 +62,7 @@ class MyApp extends StatelessWidget {
         path: "/logIn",
         builder: (context, state) => LogIn(),
       ),
+      //StatefulShellRoute 사용해서 bottomNavigationBar를 이용한 페이지 관리 설정
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             ScaffoldWithNavBar(navigationShell:navigationShell),

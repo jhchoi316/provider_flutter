@@ -29,15 +29,18 @@ class ProviderChildCamera with ChangeNotifier {
     try {
       var url = Uri.parse('http://43.202.100.36:5000/home/child');
 
+      // 해당 url로 pid, date를 POST
       var request = http.MultipartRequest('POST', url)
         ..fields['pid'] = pid // 사용자가 입력한 pid
         ..fields['date'] = DateFormat('yyyy-MM-dd').format(selectedDate); // 사용자가 입력한 text
 
+      // 이미지 파일을 multipartfile로 변환
       var multipartFile = await http.MultipartFile.fromPath(
         'image',
         image.path,
-        contentType: MediaType('image', 'jpeg'),
+        contentType: MediaType('image', 'jpeg'), //서버가 요청된 이미지를 jpeg 형식으로 처리하도록
       );
+
       // 생성된 MultipartFile 객체를 요청에 추가
       request.files.add(multipartFile);
 
@@ -46,9 +49,11 @@ class ProviderChildCamera with ChangeNotifier {
       if (response.statusCode == 200) {
         print('Data uploaded successfully');
 
+        //요청이 성공적으로 처리되면, 서버에서 반환된 데이터를 읽어온다.
         var responseData = await response.stream.toBytes();
         var responseString = String.fromCharCodes(responseData);
 
+        // json 형식으로 decode해서 return
         return jsonResponse = convert.jsonDecode(responseString) as Map<String, dynamic>;
       } else {
         throw Exception('Request failed with status: ${response.statusCode}.');
@@ -66,6 +71,7 @@ class ProviderChildCamera with ChangeNotifier {
     this.selectedDate = selectedDate;
   }
 
+  // ChildCamera 에서 작성완료 버튼 클릭 시 호출됨
   Future<void> setInput(String pid, File image, DateTime selectedDate) async {
     this.pid = pid;
     this.image = image;
@@ -77,6 +83,7 @@ class ProviderChildCamera with ChangeNotifier {
     jsonResponse = await writeChildCamera(pid,image!,selectedDate);
     print("ChildResult용 데이터 받음!");
 
+    // jsonResponse에 있는 data를 각각 변수에 넣기
     correctedText = jsonResponse['correctedText'];
     imageUrl = jsonResponse['imageUrl'];
     translatedText = jsonResponse['translatedText'];
@@ -84,6 +91,7 @@ class ProviderChildCamera with ChangeNotifier {
     notifyListeners();
     print("Provider_Child_Camera notifyListeners() on");
 
+    // 변경된 일기 보여주기 위한 교정본과 번역본 교차 출력 전처리
     setChangedText(correctedText, translatedText);
 
     //값 바뀐다는 걸 알려줌
@@ -92,6 +100,7 @@ class ProviderChildCamera with ChangeNotifier {
     // print(imageUrl);
   }
 
+  // 변경된 일기 보여주기 위한 교정본과 번역본 교차 출력 전처리
   void setChangedText(String correctedText, String translatedText) async {
     changedText = '';
     correctedTextList = correctedText.split('.');

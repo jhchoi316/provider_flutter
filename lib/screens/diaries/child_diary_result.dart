@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/provider_home.dart';
+import '../providers/provider_loading.dart';
 
 
 class ChildResult extends StatefulWidget {
@@ -22,6 +23,8 @@ class _ChildResultState extends State<ChildResult> {
   Widget showImage() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    //ProviderChildCamera 로부터 아이 이미지 url get
     late String? imageUrl = context.read<ProviderChildCamera>().getImageUrl();
 
     return Container(
@@ -36,9 +39,12 @@ class _ChildResultState extends State<ChildResult> {
     );
   }
 
+  // 일기 보여주는 위젯
   Widget showDiary() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
+    // ProviderChildCamera 로부터 변경된 일기 get
     late String? changedText = context.read<ProviderChildCamera>().getChangedText();
 
     context.read<ProviderParentUpload>().getChangedText();
@@ -96,7 +102,6 @@ class _ChildResultState extends State<ChildResult> {
               height: 8 * (height * 0.02 * 1.2),
               child: SingleChildScrollView(
                 child: Text(
-                  // 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트, 줄 바꿈 테스트,
                       '$changedText',
                       style: TextStyle(
                       color: Colors.black,
@@ -123,6 +128,7 @@ class _ChildResultState extends State<ChildResult> {
     );
   }
 
+  // 소통하러 가기 버튼
   Widget writeDone() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -137,17 +143,16 @@ class _ChildResultState extends State<ChildResult> {
       ),
       child: TextButton(
         onPressed: () async {
-          setState(() {
-            _isLoading = true; // Set isLoading to true when login button is pressed
-          });
+          //isLoading을 true로
+          context.read<ProviderLoading>().setIsLoadingTrue();
+          //_selectedDate가 다른 페이지(소통페이지)에서도 사용되어야하기 때문에 ProviderHome에 오늘 날짜를 넘겨줌
           context.read<ProviderHome>().setSelectedDate(DateTime.now());
+          //소통페이지 구성에 필요한 data 받음 (ProviderHome의 setData에서)
           await context.read<ProviderHome>().setData();
-          print("Child Result $_isLoading");
-
-          setState(() {
-            context.go('/conversation');
-            _isLoading = false; // Set isLoading to false after setData finishes
-          });
+          //isLoading을 false로
+          context.read<ProviderLoading>().setIsLoadingFalse();
+          //소통페이지로 고!!
+          context.go('/conversation');
         },
 
         child: Column(
@@ -186,8 +191,8 @@ class _ChildResultState extends State<ChildResult> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              showImage(),
-              showDiary(),
+              showImage(), //이미지를 보여주는 위젯
+              showDiary(), // 일기 보여주는 위제
             ],
           ),
         )

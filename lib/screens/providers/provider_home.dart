@@ -77,6 +77,7 @@ class ProviderHome with ChangeNotifier {
     childCharacterUrl = childDiary['characterUrl'];
     childQuestion = childDiary['question'];
 
+    // 변경된 일기 보여주기 위한 교정본과 번역본 교차 출력 전처리
     setParentChangedText(parentCorrectedText, parentTranslatedText);
     setChildChangedText(childCorrectedText, childTranslatedText);
 
@@ -92,12 +93,14 @@ class ProviderHome with ChangeNotifier {
     // print(childImageUrl);
     // print("ChildCharacter $childCharacterUrl");
     // print("ChildlQuestion $childQuestion");
-    // notifyListeners();
+
+    notifyListeners();
     print("Provider_Home notifyListeners() on");
     print('setData 끝');
 
   }
 
+  // 다른 페이지에서 각각의 data를 사용하고 싶을 때 get으로 호출할 수 있도록 설정하기
   String? getParentText() {
     return parentText;
   }
@@ -110,6 +113,7 @@ class ProviderHome with ChangeNotifier {
     return parentTranslatedText;
   }
 
+  // 변경된 일기 보여주기 위한 교정본과 번역본 교차 출력 전처리
   void setParentChangedText(String parentCorrectedText, String parentTranslatedText) async {
     parentChangedText = '';
     parentCorrectedTextList = [];

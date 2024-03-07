@@ -32,10 +32,11 @@ class _ParentUploadState extends State<ParentUpload> {
   final TextEditingController _textController = TextEditingController();
 
   Future getImage(ImageSource imageSource) async {
+    // 갤러리에서 pick한 이미지 정보를 image에 넣음
     final image = await picker.pickImage(source: imageSource);
 
     setState(() {
-      _image = File(image!.path); // 가져온 이미지를 _image에 저장
+      _image = File(image!.path); // image의 path에 해당하는 파일을 _image에 저장
     });
     return _image;
   }
@@ -47,7 +48,7 @@ class _ParentUploadState extends State<ParentUpload> {
 
     return GestureDetector(
       onTap: () {
-        getImage(ImageSource.gallery);
+        getImage(ImageSource.gallery); // 이미지를 선택할 소스로 gallery 지정
       },
       child: Container(
         color: const Color(0xffffffff),
@@ -62,16 +63,22 @@ class _ParentUploadState extends State<ParentUpload> {
                   shape: BoxShape.circle,
                   color: Color(0xffEAEAEA),
                 ),
+                // !!!!!!!! InkWell 사용 안해도 될 거 같은데 나중에 테스트 해보기
                 child: InkWell(
                   child: Image.asset("assets/gallery.png"),
                 )
             )
-        ) : Image.file(
-            File(_image!.path), fit: BoxFit.contain), //통신: image
+        )
+        //_image가 null이 아니면 pick한 이미지 보여주기
+        : Image.file(
+          File(_image!.path),
+          fit: BoxFit.contain
+        ),
       ),
     );
   }
 
+  // 부모 일기 작성 부분 & 작성 완료 버튼
   Widget inputText() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -119,6 +126,7 @@ class _ParentUploadState extends State<ParentUpload> {
     );
   }
 
+  // 실제 작성 부분
   Widget diaryWrite() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -131,12 +139,13 @@ class _ParentUploadState extends State<ParentUpload> {
         width: width, // <-- TextField width
         height: height * 0.3, // <-- TextField height
         child: TextField(
+          // 작성된 텍스트는 _textController로 컨트롤
           controller: _textController,
           style: TextStyle(
             fontFamily: 'KNU_TRUTH',
           ),
           maxLines: maxLines,
-          keyboardType: TextInputType.multiline,
+          keyboardType: TextInputType.multiline, // 여러줄의 텍스트 입력
           decoration: InputDecoration(
             fillColor: Colors.white,
             filled: true,
@@ -151,6 +160,7 @@ class _ParentUploadState extends State<ParentUpload> {
     );
   }
 
+  // 작성 완료 버튼
   Widget writeDone() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -164,16 +174,18 @@ class _ParentUploadState extends State<ParentUpload> {
         borderRadius: BorderRadius.circular(60.0),
       ),
       child: TextButton(
+        // 완료 버튼 누르면 ProviderParentUpload로 필요한 data 보내고 페이지 이동
         onPressed: () async {
           if (_image != null && _textController.text != '') {
             context.read<ProviderLoading>().setIsLoadingTrue();
-            print("setIsLoadingTrue");
-            // if (_image != null) { // 작성한 text가 null인지 아닌지 확인) {
+
             String pid = "0";
-            //   String text = _textController.text;
             String text = _textController.text;
+            // 코드 수정 필요!!!!!! _image 타입이 File이라서 아래 코드 없이 그냥 _image사용해도 될 것 같음 ( cild camera에서는 _image사용)
             File image = File(_image!.path); // 사용자가 선택한 이미지 파일
 
+
+            // ProviderParentUpload로 POST 해야할 data 보내기
             await context.read<ProviderParentUpload>().setInput(pid, text, image!, DateTime.now());
             context.read<ProviderLoading>().setIsLoadingFalse();
             context.go('/parentResult');
@@ -228,8 +240,8 @@ class _ParentUploadState extends State<ParentUpload> {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                showImage(),
-                inputText(),
+                showImage(), //이미지를 보여주는 위젯
+                inputText(), // 부모 일기 작성 부분 & 작성 완료 버튼
               ],
             )
         )
